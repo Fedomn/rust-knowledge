@@ -3,7 +3,7 @@
 default: test
 
 test: fix
-	cargo test
+	cargo test -- --nocapture
 
 run:
 	cargo run
@@ -18,8 +18,8 @@ clean:
 	cargo clean
 
 fix:
-	@cargo fix --allow-dirty --allow-staged
-	@cargo fmt
+	cargo fix --allow-dirty --allow-staged
+	cargo fmt
 
 release:
 	cargo build --release
