@@ -118,4 +118,81 @@ mod basic {
         let result: Vec<i32> = nums.iter().map(double).filter(less_than_10).collect();
         println!("{:?}", result);
     }
+
+    #[test]
+    fn pattern_match() {
+        fn color(color: &str) -> &str {
+            match color {
+                "red" => "red",
+                "blue" => "blue",
+                _ => "unknown",
+            }
+        }
+        println!("{} {}", color("red"), color(""));
+    }
+
+    #[test]
+    fn destructuring() {
+        struct Person {
+            name: String,
+            age: u8,
+        }
+        let rgb = [1, 12, 34];
+        let [red, green, blue] = rgb;
+        println!("{} {} {}", red, green, blue);
+
+        let person = Person {
+            name: "name".to_string(),
+            age: 12,
+        };
+        let Person { name, age } = person;
+        println!("{} {}", name, age);
+    }
+
+    #[test]
+    #[allow(dead_code)]
+    fn enum_match() {
+        enum Direction {
+            Forward,
+            Backward,
+            Left,
+            Right,
+        }
+
+        enum Operation {
+            PowerOn,
+            PowerOff,
+            Move(Direction),
+            Rotate,
+            TakePhoto { is_landscape: bool, zoom_level: i32 },
+        }
+
+        fn operate_drone(operation: Operation) {
+            match operation {
+                Operation::PowerOn => println!("Power On"),
+                Operation::PowerOff => println!("Power Off"),
+                Operation::Move(direction) => move_drone(direction),
+                Operation::Rotate => println!("Rotate"),
+                Operation::TakePhoto {
+                    is_landscape,
+                    zoom_level,
+                } => println!("TakePhoto {}, {}", is_landscape, zoom_level),
+            }
+        }
+
+        fn move_drone(direction: Direction) {
+            match direction {
+                Direction::Forward => println!("Move Forward"),
+                Direction::Backward => println!("Move Backward"),
+                Direction::Left => println!("Move Left"),
+                Direction::Right => println!("Move Right"),
+            }
+        }
+
+        operate_drone(Operation::Move(Direction::Forward));
+        operate_drone(Operation::TakePhoto {
+            is_landscape: true,
+            zoom_level: 10,
+        })
+    }
 }
