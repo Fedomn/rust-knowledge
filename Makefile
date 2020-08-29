@@ -1,4 +1,9 @@
-default: run
+.PHONY: test run build check clean fix release
+
+default: test
+
+test: fix
+	cargo test
 
 run:
 	cargo run
