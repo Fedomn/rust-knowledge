@@ -71,4 +71,51 @@ mod basic {
         map.insert("2", "2");
         println!("{:?}", map);
     }
+
+    #[test]
+    fn function() {
+        fn calc(a: i8, b: i8) -> i8 {
+            a + b
+        }
+
+        let calc2 = |a: i8, b: i8| a + b;
+
+        println!("{} {}", calc(1, 2), calc2(3, 4));
+    }
+
+    #[test]
+    fn control_flow() {
+        fn while_flow() {
+            let mut res = String::from("");
+            let mut count = 0;
+            while count < 10 {
+                res += count.to_string().as_str();
+                count += 1;
+            }
+            println!("{}", res);
+        }
+        while_flow();
+
+        fn iter_flow() {
+            let mut res = String::new();
+
+            for each in [1, 2, 3, 4, 5].iter() {
+                res += format!("{}", each).as_str();
+            }
+            for each in 1..5 {
+                res += format!("{}", each).as_str();
+            }
+            println!("{}", res);
+        }
+        iter_flow();
+    }
+
+    #[test]
+    fn stream() {
+        let nums = vec![1, 2, 3];
+        let double = |n: &i32| -> i32 { n * 2 };
+        let less_than_10 = |n: &i32| -> bool { *n < 10 };
+        let result: Vec<i32> = nums.iter().map(double).filter(less_than_10).collect();
+        println!("{:?}", result);
+    }
 }
