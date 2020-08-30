@@ -3,7 +3,7 @@ mod ownership {
     #[test]
     fn scope() {
         // SCOPE owns a VARIABLE owns a VALUE
-
+        // SCOPE surrounded by `{}`
         // A value lives on memory, it can move between variables.
         // A variable can be an owner of a value.
         // A variable comes in and goes out of a scope.
@@ -143,5 +143,29 @@ mod ownership {
         // and the outer func `scope_func` loses the ownership of s.
 
         println!("{}", new_h);
+    }
+
+    #[test]
+    fn scope_reference() {
+        // reference: It's a value that refers to another value without taking its ownership.
+        // represented with a leading ampersand &.
+
+        let s = String::from("hi");
+        let len = strlen(&s);
+        println!("len({}) = {}", s, len);
+
+        let mut cs = s;
+        change(&mut cs);
+        println!("{}", cs);
+
+        // s is a reference to a String
+        // s goes out of scope but nothing happens. because strlen isn't the owner of s
+        fn strlen(s: &String) -> usize {
+            s.len()
+        }
+
+        fn change(s: &mut String) {
+            s.push_str(" reference !");
+        }
     }
 }
