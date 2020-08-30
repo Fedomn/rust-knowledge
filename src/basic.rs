@@ -2,13 +2,31 @@
 mod basic {
     #[test]
     fn variable() {
-        // default variable is immutable
+        // variable is immutable
         let a = 1;
-        let b = 2;
-        let x = false;
-        // Rust’s const as a “label” to a constant value. During compile time they get replaced by their actual values in all the places they are used.
+        println!("{}", a);
+        // but we can declare a new variable, with the same name: a
+        let a = 3;
+        println!("{}", a);
+
+        // Rust’s const as a “label” to a constant value.
+        // During compile time they get replaced by their actual values in all the places they are used.
         const C: &str = "122";
-        println!("{} {} {} {}", a, b, x, C);
+        println!("{}", C);
+
+        // integer
+        let _ = 1_2_3; // decimal
+        let _: i64 = 0xdeadbeef; // hex
+        let _ = 0o444; // octal
+        let _ = 0b0101_1010; // binary
+        let _ = b'I'; // byte
+
+        // float
+        let _ = 2.0; // f64
+        let _: f32 = 3.0; // f32
+
+        let _ = '💯'; // char
+        let _ = false; // bool
     }
 
     #[test]
@@ -19,6 +37,9 @@ mod basic {
         let name3 = "growable name".to_string(); // String
         let name4 = name3.as_str(); // &str
         println!("{} {} {} {}", name, name2, name3, name4);
+
+        let parsed3 = "3".parse::<u32>().unwrap();
+        println!("{}", parsed3);
     }
 
     #[test]
@@ -45,6 +66,21 @@ mod basic {
         let mut list = vec![1, 2, 3];
         list.push(4);
         println!("{:?}", list);
+    }
+
+    #[test]
+    fn tuple() {
+        let point = (10, 20.5);
+        let (x, y) = point;
+        println!("x: {}, y: {}", x, y);
+        println!("x: {}, y: {}", point.0, point.1);
+
+        // {...} is an expression.
+        let (x, y) = {
+            let x = 1;
+            (x + 1, 5) // <- here it returns a tuple: (2, 5)
+        };
+        println!("{} {}", x, y);
     }
 
     #[test]
