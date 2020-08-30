@@ -99,4 +99,49 @@ mod ownership {
         let _ = x;
         println!("{:?}", x);
     }
+
+    #[test]
+    fn scope_func() {
+        // Passing a value to a func is similar to assigning it to a variable.
+        // It will either MOVE or COPY the value.
+
+        // change s owner to this func, after this func, rust will reclaim its memory
+        fn change_owner(s: String) {
+            println!("{}", s);
+        }
+
+        // func receives a copy of i
+        fn copy(i: i8) {
+            println!("{}", i);
+        }
+
+        // give the owner of s to calling func
+        fn give_owner() -> String {
+            let s = String::from("s");
+            s
+        }
+
+        // give back the owner of s to calling func
+        fn change_backed_owner(s: String) -> String {
+            s
+        }
+
+        let s = String::from("start");
+        change_owner(s);
+        // println!("{}", s); // will error, because the owner of s has changed.
+
+        let i = 1;
+        copy(i);
+        println!("{}", i); // copy i, nothing move
+
+        let g = give_owner();
+        println!("{}", g);
+
+        let h = String::from("hello");
+        let new_h = change_backed_owner(h);
+        // println!("{}", h); // will error, because h owner is `change_backed_owner` func
+        // and the outer func `scope_func` loses the ownership of s.
+
+        println!("{}", new_h);
+    }
 }
