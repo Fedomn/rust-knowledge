@@ -1,3 +1,6 @@
+//! Ownership is Rust’s most unique feature, and it enables Rust to make memory safety guarantees without needing a garbage collector.
+//! Rust uses a third approach: memory is managed through a system of ownership with a set of rules that the compiler checks at compile time.
+
 #[cfg(test)]
 mod ownership {
     #[test]
