@@ -20,6 +20,7 @@ clean:
 fix:
 	cargo fix --allow-dirty --allow-staged
 	cargo fmt
+	cargo clippy
 
 release:
 	cargo build --release
