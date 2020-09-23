@@ -1,9 +1,9 @@
 mod basic;
+mod enums;
 mod error;
+mod lifetimes;
 mod ownership;
 mod structs;
-mod enums;
-mod lifetimes;
 mod traits;
 
 fn main() {}
