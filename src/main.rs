@@ -6,5 +6,6 @@ mod modules;
 mod ownership;
 mod structs;
 mod traits;
+mod constant;
 
 fn main() {}
