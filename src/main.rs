@@ -1,4 +1,5 @@
 mod basic;
+mod constant;
 mod enums;
 mod error;
 mod lifetimes;
@@ -6,6 +7,6 @@ mod modules;
 mod ownership;
 mod structs;
 mod traits;
-mod constant;
+mod wrapper_type;
 
 fn main() {}
