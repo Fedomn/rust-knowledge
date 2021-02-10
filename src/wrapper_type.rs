@@ -7,10 +7,11 @@
 #[cfg(test)]
 mod wrapper_type {
     use std::ops::Deref;
-    use std::rc::Rc;
+    use std::rc::{Rc, Weak};
 
     use crate::wrapper_type::wrapper_type::BList::{Cons, Nil};
     use crate::wrapper_type::wrapper_type::RcList::{RcCons, RcNil};
+    use std::cell::RefCell;
 
     // Boxes allow you to store data on the heap rather than the stack. What remains on the stack is the pointer to the heap data.
     // Boxes mostly used in these situations:
@@ -92,5 +93,33 @@ mod wrapper_type {
             println!("a reference count {}", Rc::strong_count(&a));
         }
         println!("a reference count {}", Rc::strong_count(&a));
+    }
+
+    // interior mutability pattern
+    // Interior mutability is a design pattern in Rust that allows you to mutate data even when there are immutable references to that data;
+    // normally, this action is disallowed by the borrowing rules.
+    #[derive(Debug)]
+    struct Node {
+        value: i32,
+        children: RefCell<Vec<Rc<Node>>>,
+        parent: RefCell<Weak<Node>>,
+    }
+    #[test]
+    fn refcell_test() {
+        let leaf = Rc::new(Node {
+            value: 1,
+            children: RefCell::new(vec![]),
+            parent: RefCell::new(Weak::new()),
+        });
+
+        let branch = Rc::new(Node {
+            value: 5,
+            children: RefCell::new(vec![Rc::clone(&leaf)]),
+            parent: RefCell::new(Weak::new()),
+        });
+
+        *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+
+        println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
     }
 }
