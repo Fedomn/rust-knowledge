@@ -7,8 +7,10 @@
 #[cfg(test)]
 mod wrapper_type {
     use std::ops::Deref;
+    use std::rc::Rc;
 
     use crate::wrapper_type::wrapper_type::BList::{Cons, Nil};
+    use crate::wrapper_type::wrapper_type::RcList::{RcCons, RcNil};
 
     // Boxes allow you to store data on the heap rather than the stack. What remains on the stack is the pointer to the heap data.
     // Boxes mostly used in these situations:
@@ -69,5 +71,26 @@ mod wrapper_type {
 
         assert_eq!(5, x);
         assert_eq!(5, *y);
+    }
+
+    // multiple ownership
+    // We use the Rc<T> type when we want to allocate some data on the heap for multiple parts of our program to read and we can’t determine at compile time which part will finish using the data last.
+
+    enum RcList {
+        RcCons(i32, Rc<RcList>),
+        RcNil,
+    }
+
+    #[test]
+    fn rc_test() {
+        let a = Rc::new(RcCons(5, Rc::new(RcCons(2, Rc::new(RcNil)))));
+        println!("a reference count {}", Rc::strong_count(&a));
+        let _b = RcCons(3, Rc::clone(&a));
+        println!("a reference count {}", Rc::strong_count(&a));
+        {
+            let _c = RcCons(4, Rc::clone(&a));
+            println!("a reference count {}", Rc::strong_count(&a));
+        }
+        println!("a reference count {}", Rc::strong_count(&a));
     }
 }
