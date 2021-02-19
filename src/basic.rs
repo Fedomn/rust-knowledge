@@ -29,6 +29,8 @@ mod basic {
         let _ = false; // bool
     }
 
+    // String vs &str
+    // https://dev.to/stevepryde/rust-string-vs-str-1l93
     #[test]
     fn string() {
         // String is growable whereas &str is immutable and fixed size.
