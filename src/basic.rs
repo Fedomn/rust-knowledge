@@ -30,6 +30,7 @@ mod basic {
     }
 
     // String vs &str
+    // https://stackoverflow.com/questions/24158114/what-are-the-differences-between-rusts-string-and-str/24159933#24159933
     // https://dev.to/stevepryde/rust-string-vs-str-1l93
     #[test]
     fn string() {
