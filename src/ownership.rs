@@ -163,12 +163,24 @@ mod ownership {
 
         // s is a reference to a String
         // s goes out of scope but nothing happens. because strlen isn't the owner of s
+        // borrows a String and can look at it
         fn strlen(s: &String) -> usize {
             s.len()
         }
 
+        // borrows a String and can change it
         fn change(s: &mut String) {
             s.push_str(" reference !");
         }
+
+        fn adds_hungary(mut country: String) {
+            country.push_str("-Hungary");
+            println!("{}", country);
+        }
+
+        let country = String::from("Austria"); // print country will error: move occurs because `country` has type `String`, which does not implement the `Copy` trait
+        adds_hungary(country); // print country will error: value moved here
+        println!("{}", "space")
+        // println!("{}", country); // will error: value borrowed here after move
     }
 }
