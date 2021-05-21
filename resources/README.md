@@ -4,6 +4,7 @@
 - [RustPrimer for beginners](https://github.com/rustcc/RustPrimer)
 - [easy_rust](https://github.com/Dhghomon/easy_rust)
 - [rust-anthology](https://github.com/brson/rust-anthology)
+- [how to implement a linked list in Rust](https://rust-unofficial.github.io/too-many-lists/)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
