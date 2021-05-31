@@ -6,6 +6,7 @@
 - [rust-anthology](https://github.com/brson/rust-anthology)
 - [how to implement a linked list in Rust](https://rust-unofficial.github.io/too-many-lists/)
 - [rust-training](https://github.com/tyrchen/rust-training)
+- [rust-blog](https://github.com/pretzelhammer/rust-blog)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
@@ -13,3 +14,4 @@
 
 ### algorithm
 - [leetcode-rust](https://github.com/pymongo/leetcode-rust)
+- [Educational algorithms implemented in Rust](https://github.com/TheAlgorithms/Rust)
