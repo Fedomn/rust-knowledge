@@ -9,6 +9,7 @@
 - [rust-blog](https://github.com/pretzelhammer/rust-blog)
 - [Fearless Concurrency with Rust](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html)
 - [Rust Functions](https://www.possiblerust.com/guide/how-to-read-rust-functions-part-1)
+- [Rust Design Patterns](https://rust-unofficial.github.io/patterns/)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
