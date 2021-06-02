@@ -7,6 +7,8 @@
 - [how to implement a linked list in Rust](https://rust-unofficial.github.io/too-many-lists/)
 - [rust-training](https://github.com/tyrchen/rust-training)
 - [rust-blog](https://github.com/pretzelhammer/rust-blog)
+- [Fearless Concurrency with Rust](https://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html)
+- [Rust Functions](https://www.possiblerust.com/guide/how-to-read-rust-functions-part-1)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
