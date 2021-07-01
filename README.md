@@ -1,4 +1,4 @@
-## Resources
+## rust-knowledge
 
 ### documentation
 - [RustPrimer for beginners](https://github.com/rustcc/RustPrimer)
