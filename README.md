@@ -11,6 +11,7 @@
 - [Rust Functions](https://www.possiblerust.com/guide/how-to-read-rust-functions-part-1)
 - [Rust Design Patterns](https://rust-unofficial.github.io/patterns/)
 - [rustmagazine](https://rustmagazine.github.io/rust_magazine_2021/index.html)
+- [rust性能手册](https://blues-star.github.io/perf-book-zh/title-page.html)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
