@@ -13,6 +13,7 @@
 - [rustmagazine](https://rustmagazine.github.io/rust_magazine_2021/index.html)
 - [rust性能手册](https://blues-star.github.io/perf-book-zh/title-page.html)
 - [rust-quiz](https://github.com/dtolnay/rust-quiz)
+- [Rust futures](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
