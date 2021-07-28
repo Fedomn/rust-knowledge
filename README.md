@@ -12,6 +12,7 @@
 - [Rust Design Patterns](https://rust-unofficial.github.io/patterns/)
 - [rustmagazine](https://rustmagazine.github.io/rust_magazine_2021/index.html)
 - [rust性能手册](https://blues-star.github.io/perf-book-zh/title-page.html)
+- [rust-quiz](https://github.com/dtolnay/rust-quiz)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
