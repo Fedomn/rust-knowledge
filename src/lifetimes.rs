@@ -1,4 +1,5 @@
 //! Every reference in Rust has a lifetime, which is the scope for which that reference is valid.
+//! A lifetime means "how long the variable lives".
 
 use std::fmt::Display;
 
