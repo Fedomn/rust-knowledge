@@ -1,5 +1,6 @@
 [workspace]
 members = [
     "playground",
-    "command_line"
+    "command_line",
+    "web_server"
 ]
