@@ -1,8 +1,4 @@
-[package]
-name = "rust-knowledge"
-version = "0.1.0"
-authors = ["Fedomn <shadowforfiend@gmail.com>"]
-edition = "2018"
-
-[dependencies]
-chrono = "0.4.15"
+[workspace]
+members = [
+    "playground"
+]
