@@ -51,6 +51,9 @@ mod err {
         use chrono::NaiveDate;
         use std::error;
 
+        // dyn => dynamic and refers to the fact that trait objects perform dynamic dispatch.
+        // This means that the decision of exactly which function is called will occur at program run time.
+        // Contrast this to static dispatch which uses the impl Trait syntax.
         fn get_date() -> Result<NaiveDate, Box<dyn error::Error>> {
             env::set_var("BOXED_DATE", "2020-08-30");
             let date = env::var("BOXED_DATE")?;
