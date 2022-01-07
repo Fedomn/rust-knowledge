@@ -14,6 +14,7 @@
 - [rust性能手册](https://blues-star.github.io/perf-book-zh/title-page.html)
 - [rust-quiz](https://github.com/dtolnay/rust-quiz)
 - [Rust futures](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
+- [learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop)
 
 ### example
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
