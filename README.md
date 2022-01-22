@@ -17,6 +17,7 @@
 - [learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop)
 
 ### example
+- [tyrchen geektime-rust](https://github.com/tyrchen/geektime-rust.git)
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
 - [learnrust](https://github.com/inancgumus/learnrust)
 
