@@ -177,7 +177,11 @@ mod basic {
     fn range_inclusive() {
         // https://stackoverflow.com/questions/34733811/what-is-the-difference-between-iter-and-into-iter
         let nums = (1..=10).collect::<Vec<i32>>();
-        let result = nums.iter().filter(|&n| n % 2 == 0).cloned().collect::<Vec<i32>>();
+        let result = nums
+            .iter()
+            .filter(|&n| n % 2 == 0)
+            .cloned()
+            .collect::<Vec<i32>>();
         println!("{:?}", result);
     }
 }
