@@ -1,22 +1,21 @@
 //! Every reference in Rust has a lifetime, which is the scope for which that reference is valid.
 //! A lifetime means "how long the variable lives".
 
-use std::fmt::Display;
-
-fn longest<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
-where
-    T: Display,
-{
-    println!("Announcement! {}", ann);
-    if x.len() > y.len() {
-        x
-    } else {
-        y
-    }
-}
-
 #[test]
-fn test1() {
+fn test_hello() {
+    use std::fmt::Display;
+    fn longest<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+    where
+        T: Display,
+    {
+        println!("Announcement! {}", ann);
+        if x.len() > y.len() {
+            x
+        } else {
+            y
+        }
+    }
+
     println!("{}", longest("1", "123", "ann"))
 }
 

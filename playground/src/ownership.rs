@@ -180,7 +180,7 @@ mod ownership {
 
         let country = String::from("Austria"); // print country will error: move occurs because `country` has type `String`, which does not implement the `Copy` trait
         adds_hungary(country); // print country will error: value moved here
-        println!("{}", "space")
+        println!("space")
         // println!("{}", country); // will error: value borrowed here after move
     }
 }
