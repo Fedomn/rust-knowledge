@@ -287,6 +287,8 @@ pub trait Write {
 - Self 代表当前的类型，比如 File 类型实现了 Write，那么实现过程中使用到的 Self 就指代 File。
 - self 在用作方法的第一个参数时，实际上是 self: Self 的简写，所以 &self 是 self: &Self, 而 &mut self 是 self: &mut Self。
 
+---
+
 Rust 允许 trait 内部包含关联类型，实现时跟关联函数一样，它也需要实现关联类型。
 
 ```rust
@@ -296,4 +298,40 @@ pub trait Parse {
 }
 ```
 
+--- 
+
+泛型trait，参考 [tower::Service](https://docs.rs/tower/0.4.11/tower/trait.Service.html)
+
+---
+
+在 Rust 中，一个 trait 可以“继承”另一个 trait 的关联类型和关联函数。
+
+比如 trait B: A ，是说任何类型 T，如果实现了 trait B，它也必须实现 trait A，换句话说，trait B 在定义时可以使用 trait A 中的关联类型和方法。
+
 #### trait object实现 子类型多态
+
+Rust 虽然没有父类和子类，但 trait 和实现 trait 的类型之间也是类似的关系，所以，Rust 也可以做子类型多态。
+
+静态分派固然很好，效率很高，但很多时候，类型可能很难在编译时决定。
+
+所以我们要有一种手段，告诉编译器，此处需要并且仅需要任何实现了 Formatter 接口的数据类型。在 Rust 里，这种类型叫 Trait Object，表现为 &dyn Trait 或者 Box<dyn Trait>。
+
+```rust
+// 这样可以在运行时，构造一个 Formatter 的列表，传递给 format 函数进行文件的格式化，这就是动态分派（dynamic dispatching）。
+pub fn format(input: &mut String, formatters: Vec<&dyn Formatter>) {
+    for formatter in formatters {
+        formatter.format(input);
+    }
+}
+```
+
+---
+
+Trait Object 的实现机理
+
+Trait Object 的底层逻辑就是胖指针。其中，一个指针指向数据本身，另一个则指向虚函数表（vtable）。
+
+vtable 是一张静态的表，Rust 在编译时会为使用了 trait object 的类型的 trait 实现生成一张表，放在可执行文件中（一般在 TEXT 或 RODATA 段）。看下图，可以帮助你理解
+
+![](./trait-object.png)
+

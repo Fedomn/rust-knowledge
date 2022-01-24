@@ -37,4 +37,38 @@ mod traits {
         assert_eq!(u8::parse("123abcd"), Ok(123));
         assert_eq!(u8::parse("abcd"), Err("failed to parse string".into()));
     }
+
+    #[test]
+    fn test_trait_object() {
+        trait Formatter {
+            fn format(&self, input: &mut String) -> bool;
+        }
+
+        struct HtmlFormatter;
+        impl Formatter for HtmlFormatter {
+            fn format(&self, input: &mut String) -> bool {
+                input.push_str("\nformatted by html formatter");
+                true
+            }
+        }
+
+        struct RustFormatter;
+        impl Formatter for RustFormatter {
+            fn format(&self, input: &mut String) -> bool {
+                input.push_str("\nformatted by rust formatter");
+                true
+            }
+        }
+
+        let mut text = "Hello World".to_string();
+        let html: &dyn Formatter = &HtmlFormatter;
+        let rust: &dyn Formatter = &RustFormatter;
+        let formatters = vec![html, rust];
+
+        for formatter in formatters {
+            formatter.format(&mut text);
+        }
+
+        println!("{}", text);
+    }
 }
