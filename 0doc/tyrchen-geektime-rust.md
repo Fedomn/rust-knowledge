@@ -162,9 +162,12 @@ RefCell 也绕过了 Rust 编译器的静态检查，允许我们在运行时，
 - 外部可变性：mut 关键字声明，编译器可以在编译时进行严格地检查，保证只有可变的值或者可变的引用，才能修改值内部的数据。
 - 内部可变性：RefCell 有时候我们希望能够绕开这个编译时的检查，对并未声明成 mut 的值或者引用。在编译器的眼里，值是只读的，但是在运行时，这个值可以得到可变借用，从而修改内部的数据。
 
-Rc / Arc / RefCell / Mutex / RwLock 使用方式如下：
+<details><summary>Rc / Arc / RefCell / Mutex / RwLock 使用方式如图</summary>
 
 ![](./rc.png)
+
+</details>
+
 
 ### lifetime
 
@@ -226,8 +229,11 @@ Rust 的 Drop trait，还可以释放任何资源，比如 socket、文件、锁
 在 Rust 中，参数多态通过泛型来支持、特设多态通过 trait 来支持、子类型多态可以用 trait object 来支持。
 
 ---
+<details><summary>编程语言类型系统</summary>
 
 ![](./type-system.png)
+
+</details>
 
 按刚才不同阶段的分类：
 - 在定义时，Rust 不允许类型的隐式转换，也就是说，Rust 是强类型语言。
@@ -241,13 +247,17 @@ Rust 中除了 let / fn / static / const 这些定义性语句外，都是表达
 
 #### 数据类型
 
-原生类型
+<details><summary>原生类型</summary>
 
 ![](./rust-primitive-type.png)
 
-组合类型
+</details>
+
+<details><summary>组合类型</summary>
 
 ![](./rust-compose-type.png)
+
+</details>
 
 
 #### 类型推到
@@ -333,5 +343,15 @@ Trait Object 的底层逻辑就是胖指针。其中，一个指针指向数据�
 
 vtable 是一张静态的表，Rust 在编译时会为使用了 trait object 的类型的 trait 实现生成一张表，放在可执行文件中（一般在 TEXT 或 RODATA 段）。看下图，可以帮助你理解
 
+<details><summary>Rust Trait Object</summary>
+
 ![](./trait-object.png)
+
+</details>
+
+<details><summary>Trait Summary</summary>
+
+![](./trait-summary.png)
+
+</details>
 
