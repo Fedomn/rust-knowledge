@@ -181,7 +181,7 @@ mod basic {
             .iter()
             .filter(|&n| n % 2 == 0)
             .cloned()
-            .collect::<Vec<i32>>();
+            .collect::<Vec<_>>();
         println!("{:?}", result);
     }
 }
