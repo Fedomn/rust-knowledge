@@ -355,3 +355,8 @@ vtable 是一张静态的表，Rust 在编译时会为使用了 trait object 的
 
 </details>
 
+<details><summary>必须掌握的 traits</summary>
+
+![](./trait-must-known.png)
+
+</details>
