@@ -1,11 +1,10 @@
 #[cfg(test)]
 mod traits {
 
-    use std::str::FromStr;
-
     #[test]
-    fn test_basic() {
+    fn test_trait_associated_type() {
         use regex::Regex;
+        use std::str::FromStr;
         trait Parse {
             type Error;
             fn parse(s: &str) -> Result<Self, Self::Error>
