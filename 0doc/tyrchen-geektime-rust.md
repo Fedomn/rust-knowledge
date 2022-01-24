@@ -267,4 +267,33 @@ Rust 编译器需要足够的上下文来进行类型推导。
 - Rust 会进行单态化（Monomorphization）处理，也就是在编译时，把所有用到的泛型函数的泛型参数展开，生成若干个函数。
 - 单态化的好处是，泛型函数的调用是静态分派（static dispatch），在编译时就一一对应，既保有多态的灵活性，又没有任何效率的损失，和普通函数调用一样高效。
 
+#### trait实现 特设多态
 
+trait 是 Rust 中的接口，它定义了类型使用这个接口的行为。在 trait 中，方法可以有缺省的实现。比如std::io::write
+
+```rust
+pub trait Write {
+  fn write(&mut self, buf: &[u8]) -> Result<usize>;
+  fn flush(&mut self) -> Result<()>;
+  fn write_vectored(&mut self, bufs: &[IoSlice<'_>]) -> Result<usize> { ... }
+  fn is_write_vectored(&self) -> bool { ... }
+  fn write_all(&mut self, buf: &[u8]) -> Result<()> { ... }
+  fn write_all_vectored(&mut self, bufs: &mut [IoSlice<'_>]) -> Result<()> { ... }
+  fn write_fmt(&mut self, fmt: Arguments<'_>) -> Result<()> { ... }
+  fn by_ref(&mut self) -> &mut Self where Self: Sized { ... }
+}
+```
+
+- Self 代表当前的类型，比如 File 类型实现了 Write，那么实现过程中使用到的 Self 就指代 File。
+- self 在用作方法的第一个参数时，实际上是 self: Self 的简写，所以 &self 是 self: &Self, 而 &mut self 是 self: &mut Self。
+
+Rust 允许 trait 内部包含关联类型，实现时跟关联函数一样，它也需要实现关联类型。
+
+```rust
+pub trait Parse {
+    type Error;
+    fn parse(s: &str) -> Result<Self, Self::Error>;
+}
+```
+
+#### trait object实现 子类型多态
