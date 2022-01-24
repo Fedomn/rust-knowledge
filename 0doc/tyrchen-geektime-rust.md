@@ -79,3 +79,62 @@ fn types_not_impl_copy_trait() {
     is_copy::<(String, u32)>();
 }
 ```
+
+---
+
+Borrow 语义允许一个值的所有权，在不发生转移的情况下，被其它上下文使用。就好像住酒店或者租房那样，旅客 / 租客只有房间的临时使用权，但没有它的所有权。另外，Borrow 语义通过引用语法（& 或者 &mut）来实现。
+
+在 Rust 中，“借用”和“引用”是一个概念。所有的引用都只是借用了“临时使用权”，它并不破坏值的单一所有权约束。
+
+#### 只读借用 / 引用
+
+Rust 没有传引用的概念，Rust 所有的参数传递都是传值，不管是 Copy 还是 Move。所以在 Rust 中，你必须显式地把某个数据的引用，传给另一个函数。
+
+Rust 的引用实现了 Copy trait，所以按照 Copy 语义，这个引用会被复制一份交给要调用的函数。对这个函数来说，它并不拥有数据本身，数据只是临时借给它使用，所有权还在原来的拥有者那里。
+
+```rust
+fn test() {
+    let data = vec![1, 2, 3, 4];
+    let data1 = &data;
+    println!(
+        "addr of value: {:p}({:p}), addr of data {:p}, data1: {:p}",
+        &data, data1, &&data, &data1
+    );
+    // addr of value: 0x70000e365810(0x70000e365810), addr of data 0x70000e3658d0, data1: 0x70000e365828
+}
+```
+
+#### 可变借用 / 引用
+- 多个可变引用共存：它破坏了循环的不变性（loop invariant），容易导致死循环甚至系统崩
+
+```rust
+fn test() {
+    let mut data = vec![1, 2, 3];
+
+    for item in data.iter_mut() {
+        data.push(*item + 1); // cannot borrow `data` as mutable more than once at a time
+    }
+}
+```
+
+- 同时有一个可变引用和若干个只读引用：堆上的数据预留的空间不够了，就会重新分配一片足够大的内存，把之前的值拷过来，然后释放旧的内存。这样就会让 data1 中保存的 &data[0] 引用失效，导致内存安全问题。
+
+```rust
+fn test() {
+    let mut data = vec![1, 2, 3];
+    let data1 = vec![&data[0]];
+    println!("data[0]: {:p}", &data[0]);
+
+    for i in 0..100 {
+        data.push(i); // cannot borrow `data` as mutable because it is also borrowed as immutable
+    }
+
+    println!("data[0]: {:p}", &data[0]);
+    println!("boxed: {:p}", &data1);
+}
+```
+
+- 为了保证内存安全，Rust 对可变引用的使用也做了严格的约束：
+  - 在一个作用域内，仅允许一个活跃的可变引用。所谓活跃，就是真正被使用来修改数据的可变引用，如果只是定义了，却没有使用或者当作只读引用使用，不算活跃。
+  - 在一个作用域内，活跃的可变引用（写）和只读引用（读）是互斥的，不能同时存在。
+
