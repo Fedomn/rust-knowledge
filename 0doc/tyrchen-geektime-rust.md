@@ -26,10 +26,14 @@ Go for the code that has to ship tomorrow, Rust for the code that has to keep ru
 符合 Copy 语义的类型，在你赋值或者传参时，值会自动按位拷贝。
 换句话说，当你要移动一个值，如果值的类型实现了 Copy trait，就会自动使用 Copy 语义进行拷贝，否则使用 Move 语义进行移动。
 
+Copy trait:
+
 - 原生类型，包括函数、不可变引用和裸指针实现了 Copy；
 - 数组和元组，如果其内部的数据结构实现了 Copy，那么它们也实现了 Copy；
 - 可变引用没有实现 Copy；
 - 非固定大小的数据结构，没有实现 Copy。
+
+Ownership:
 
 - 所有权：一个值只能被一个变量所拥有，且同一时刻只能有一个所有者，当所有者离开作用域，其拥有的值被丢弃，内存得到释放。
 - Move 语义：赋值或者传参会导致值 Move，所有权被转移，一旦所有权转移，之前的变量就不能访问。
