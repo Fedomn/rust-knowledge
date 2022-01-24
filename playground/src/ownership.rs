@@ -184,3 +184,18 @@ mod ownership {
         // println!("{}", country); // will error: value borrowed here after move
     }
 }
+
+#[cfg(test)]
+mod reference_counter {
+    #[test]
+    fn refcell() {
+        use std::cell::RefCell;
+        let data = RefCell::new(1);
+        {
+            // 同一个作用域下，我们不能同时有活跃的可变借用和不可变借用
+            let mut v = data.borrow_mut();
+            *v += 1;
+        }
+        println!("data: {:?}", data.borrow());
+    }
+}
