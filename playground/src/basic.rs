@@ -50,6 +50,19 @@ mod basic {
         // Array: fixed size
         let list = [1, 2, 3];
         println!("{:?}", list);
+
+        let l2 = [1; 3];
+        println!("{:?}", l2);
+
+        // Slices can point to a section of an array
+        // They are of the form [starting_index..ending_index]
+        // starting_index is the first position in the slice
+        // ending_index is one more than the last position in the slice
+        let l3 = [0; 10];
+        // x is the slice type
+        let x = &l3[..];
+        println!("{:?}", x);
+
         // Vectors: grow/shrink in size
         let mut list = vec![1, 2, 3];
         list.push(4);
