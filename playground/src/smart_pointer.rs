@@ -2,9 +2,11 @@
 mod smart_pointer {
     use std::borrow::Cow;
     use std::collections::HashMap;
+    use std::fmt::{Debug, Formatter};
+    use std::ops::Deref;
     use std::sync::{Arc, Mutex};
-    use std::thread;
     use std::time::Duration;
+    use std::{fmt, thread};
 
     #[test]
     fn test_box_my_allocator() {
@@ -93,6 +95,97 @@ mod smart_pointer {
         thread::sleep(Duration::from_millis(100));
 
         println!("metrics {:?}", metrics.lock().unwrap());
+    }
+
+    #[test]
+    fn custom_smart_pointer_string() {
+        // 字符串较小时候，直接放在栈上，否则仍然使用String
+        const MINI_STRING_MAX_LEN: usize = 30;
+
+        struct MiniString {
+            len: u8,
+            data: [u8; MINI_STRING_MAX_LEN],
+        }
+
+        impl MiniString {
+            fn new(s: impl AsRef<str>) -> Self {
+                let bytes = s.as_ref().as_bytes();
+                let len = bytes.len();
+                let mut data = [0; MINI_STRING_MAX_LEN];
+                data[..len].copy_from_slice(bytes);
+                Self {
+                    len: len as u8,
+                    data,
+                }
+            }
+        }
+
+        use std::str;
+        impl Deref for MiniString {
+            type Target = str;
+
+            fn deref(&self) -> &Self::Target {
+                str::from_utf8(&self.data[..self.len as usize]).unwrap()
+            }
+        }
+
+        impl Debug for MiniString {
+            fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+                write!(f, "{}", self.deref())
+            }
+        }
+
+        #[derive(Debug)]
+        enum MyString {
+            Inline(MiniString),
+            Standard(String),
+        }
+
+        impl Deref for MyString {
+            type Target = str;
+
+            fn deref(&self) -> &Self::Target {
+                match *self {
+                    // Using the ref keyword, the value is only borrowed, not moved
+                    // & vs ref
+                    // & denotes that your pattern expects a reference to an object. Hence & is a part of said pattern: &Foo matches different objects than Foo does.
+                    // ref indicates that you want a reference to an unpacked value. It is not matched against: Foo(ref foo) matches the same objects as Foo(foo).
+                    MyString::Inline(ref v) => v.deref(),
+                    MyString::Standard(ref v) => v.deref(),
+                }
+            }
+        }
+
+        impl<T> From<T> for MyString
+        where
+            T: AsRef<str> + Into<String>,
+        {
+            fn from(s: T) -> Self {
+                match s.as_ref().len() > MINI_STRING_MAX_LEN {
+                    true => Self::Standard(s.into()),
+                    false => Self::Inline(MiniString::new(s)),
+                }
+            }
+        }
+
+        impl fmt::Display for MyString {
+            fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+                write!(f, "{}", self.deref())
+            }
+        }
+
+        // MyString 里，String 有 3 个 word，一共 24 字节，enum 的 tag + padding 最少 8 字节，整个结构占 32 字节
+        // MiniString 有 30 字节 data + 1 字节 len，一共 31 字节
+        let len1 = std::mem::size_of::<MyString>(); // 32
+        let len2 = std::mem::size_of::<MiniString>(); // 31
+        assert_eq!(len1, 32);
+        assert_eq!(len2, 31);
+
+        let s1: MyString = "hello world".into();
+        let s2: MyString = "这是一个超过了三十个字节的很长很长的字符串".into();
+
+        println!("{:?}", s1);
+        println!("{:?}", s2);
     }
 }
 
