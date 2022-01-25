@@ -41,4 +41,33 @@ mod smart_pointer {
 
         // data 在这里 drop，可以在打印中看到 FREE
     }
+
+    #[test]
+    fn test_cow_basic() {
+        use std::borrow::Cow;
+
+        fn insert_prefix_cow<'a>(strs: &'a Vec<String>, prefix: &'a str) -> Vec<Cow<'a, String>> {
+            strs.into_iter()
+                .filter_map(|s| match s.starts_with(prefix) {
+                    true => Some(Cow::Borrowed(s)),
+                    false => Some(Cow::Owned(prefix.to_owned() + s)),
+                })
+                .collect::<Vec<Cow<String>>>()
+        }
+
+        let strs = vec!["hi_rust".to_string(), "rust".to_string()];
+        let p = "hi_";
+        let new_strs = insert_prefix_cow(&strs, &p);
+        println!("{:?}", new_strs);
+
+        for i in 0..2 {
+            println!("source addr: {:p}", &strs[i]);
+            println!("cow addr: {:p}", &*new_strs[i]); // cow通过deref，获取原始数据
+        }
+
+        // 对于第一个hi_rust，它是 Cow::Borrowed，因为它是从 strs 中 borrow 的
+        // 对于第二个rust，它是 Cow::Owned，因此它的地址发生了变化
+        assert_eq!(strs[0].as_ptr(), new_strs[0].as_ref().as_ptr());
+        assert_ne!(strs[1].as_ptr(), new_strs[1].as_ref().as_ptr());
+    }
 }

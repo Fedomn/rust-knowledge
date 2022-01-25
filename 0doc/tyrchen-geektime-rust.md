@@ -391,3 +391,28 @@ pub fn new(x: T) -> Self {
 
 ---
 
+Cow 是 Rust 下用于提供写时克隆（Clone-on-Write）的一个智能指针。 它是一个 enum，可以包含一个对类型 B 的只读引用，或者包含对类型 B 的拥有所有权的数据。
+
+Cow通过deref实现了，一个类型被borrow成不同类型。其中ToOwned含义：B可以转换为它owned type，比如 &str 可以转成 String。
+
+使用场景：它可以在需要的时候才进行内存的分配和拷贝。如果 Cow<'a, B> 中的 Owned 数据类型是一个需要在堆上分配内存的类型，如 String、Vec 等，还能减少堆内存分配的次数。
+
+```rust
+pub enum Cow<'a, B> where B: 'a + ToOwned + ?Sized {
+  Borrowed(&'a B),
+  Owned(<B as ToOwned>::Owned),
+}
+
+impl<B: ?Sized + ToOwned> Deref for Cow<'_, B> {
+  type Target = B;
+
+  fn deref(&self) -> &B {
+    match *self {
+      Borrowed(borrowed) => borrowed,
+      Owned(ref owned) => owned.borrow(),
+    }
+  }
+}
+```
+
+
