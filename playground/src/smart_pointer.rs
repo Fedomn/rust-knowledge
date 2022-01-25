@@ -1,5 +1,7 @@
 #[cfg(test)]
 mod smart_pointer {
+    use std::borrow::Cow;
+
     #[test]
     fn test_box_my_allocator() {
         use std::alloc::{AllocError, Allocator, Layout};
@@ -42,19 +44,17 @@ mod smart_pointer {
         // data 在这里 drop，可以在打印中看到 FREE
     }
 
+    pub fn insert_prefix_cow<'a>(strs: &'a Vec<String>, prefix: &'a str) -> Vec<Cow<'a, String>> {
+        strs.into_iter()
+            .filter_map(|s| match s.starts_with(prefix) {
+                true => Some(Cow::Borrowed(s)),
+                false => Some(Cow::Owned(prefix.to_owned() + s)),
+            })
+            .collect::<Vec<Cow<String>>>()
+    }
+
     #[test]
     fn test_cow_basic() {
-        use std::borrow::Cow;
-
-        fn insert_prefix_cow<'a>(strs: &'a Vec<String>, prefix: &'a str) -> Vec<Cow<'a, String>> {
-            strs.into_iter()
-                .filter_map(|s| match s.starts_with(prefix) {
-                    true => Some(Cow::Borrowed(s)),
-                    false => Some(Cow::Owned(prefix.to_owned() + s)),
-                })
-                .collect::<Vec<Cow<String>>>()
-        }
-
         let strs = vec!["hi_rust".to_string(), "rust".to_string()];
         let p = "hi_";
         let new_strs = insert_prefix_cow(&strs, &p);
@@ -69,5 +69,43 @@ mod smart_pointer {
         // 对于第二个rust，它是 Cow::Owned，因此它的地址发生了变化
         assert_eq!(strs[0].as_ptr(), new_strs[0].as_ref().as_ptr());
         assert_ne!(strs[1].as_ptr(), new_strs[1].as_ref().as_ptr());
+    }
+}
+
+#[cfg(test)]
+mod cow_bench_test {
+    extern crate test; // 声明外部crate依赖，并将其bind到当前作用于中
+
+    use test::Bencher;
+
+    use super::smart_pointer::*;
+
+    fn insert_prefix_clone(strs: &Vec<String>, prefix: &str) -> Vec<String> {
+        strs.into_iter()
+            .filter_map(|s| match s.starts_with(prefix) {
+                true => Some(s.clone()),
+                false => Some(s.clone() + prefix),
+            })
+            .collect()
+    }
+
+    #[bench]
+    #[ignore]
+    fn test_cow(b: &mut Bencher) {
+        let mut c = vec!["hi_rust".to_string(); 1024];
+        let mut f = vec!["rust".to_string(); 1024];
+        c.append(&mut f);
+        let p = "hi_";
+        b.iter(|| insert_prefix_cow(&c, &p));
+    }
+
+    #[bench]
+    #[ignore]
+    fn test_clone(b: &mut Bencher) {
+        let mut c = vec!["hi_rust".to_string(); 1024];
+        let mut f = vec!["rust".to_string(); 1024];
+        c.append(&mut f);
+        let p = "hi_";
+        b.iter(|| insert_prefix_clone(&c, &p));
     }
 }
