@@ -1,6 +1,9 @@
 //! Every reference in Rust has a lifetime, which is the scope for which that reference is valid.
 //! A lifetime means "how long the variable lives".
 
+//! Lifetime elision sugar:
+//! https://doc.rust-lang.org/stable/reference/lifetime-elision.html#lifetime-elision
+
 #[test]
 fn test_hello() {
     use std::fmt::Display;

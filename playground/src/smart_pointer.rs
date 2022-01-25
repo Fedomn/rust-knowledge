@@ -50,6 +50,8 @@ mod smart_pointer {
         // data 在这里 drop，可以在打印中看到 FREE
     }
 
+    // missing lifetime specifier:
+    // this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `strs` or `prefix`
     pub fn insert_prefix_cow<'a>(strs: &'a Vec<String>, prefix: &'a str) -> Vec<Cow<'a, String>> {
         strs.into_iter()
             .filter_map(|s| match s.starts_with(prefix) {
@@ -79,6 +81,7 @@ mod smart_pointer {
 
     #[test]
     fn mutex_guard_test() {
+        // 用 Arc 来提供并发环境下的共享所有权（使用引用计数）
         let metrics = Arc::new(Mutex::new(HashMap::<Cow<str>, usize>::new()));
         for i in 0..30 {
             let m = metrics.clone();
