@@ -1,6 +1,10 @@
 #[cfg(test)]
 mod smart_pointer {
     use std::borrow::Cow;
+    use std::collections::HashMap;
+    use std::sync::{Arc, Mutex};
+    use std::thread;
+    use std::time::Duration;
 
     #[test]
     fn test_box_my_allocator() {
@@ -69,6 +73,26 @@ mod smart_pointer {
         // 对于第二个rust，它是 Cow::Owned，因此它的地址发生了变化
         assert_eq!(strs[0].as_ptr(), new_strs[0].as_ref().as_ptr());
         assert_ne!(strs[1].as_ptr(), new_strs[1].as_ref().as_ptr());
+    }
+
+    #[test]
+    fn mutex_guard_test() {
+        let metrics = Arc::new(Mutex::new(HashMap::<Cow<str>, usize>::new()));
+        for i in 0..30 {
+            let m = metrics.clone();
+            thread::spawn(move || {
+                // 此时只有拿到 MutexGuard 的线程可以访问 HashMap
+                let mut m = m.lock().unwrap();
+                println!("I am {:?}, got lock", i);
+                // Cow 实现了很多数据结构的 From trait，所以我们可以用 "hello".into() 生成 Cow
+                let e = m.entry("key".into()).or_insert(0);
+                *e += 1;
+            });
+        }
+
+        thread::sleep(Duration::from_millis(100));
+
+        println!("metrics {:?}", metrics.lock().unwrap());
     }
 }
 
