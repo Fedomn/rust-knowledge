@@ -360,3 +360,34 @@ vtable 是一张静态的表，Rust 在编译时会为使用了 trait object 的
 ![](./trait-must-known.png)
 
 </details>
+
+### 数据结构
+
+#### 智能指针
+
+智能指针是一个表现行为很像指针的数据结构，但除了指向数据的指针外，它还有元数据以提供额外的处理能力。
+
+String 对堆上的值有所有权，而 &str 是没有所有权的，这是 Rust 中智能指针和普通胖指针的区别。
+
+在 Rust 中，凡是需要做资源回收的数据结构，且实现了 Deref/DerefMut/Drop，都是智能指针。
+
+--- 
+
+Box，它是 Rust 中最基本的在堆上分配内存的方式，绝大多数其它包含堆内存分配的数据类型，内部都是通过 Box<T> 完成的，比如 Vec<T>。
+
+Box::new() 是一个函数，所以传入它的数据会出现在栈上，再移动到堆上。注意，下面的inline，在release模式下，这个函数会被优化掉。
+也就是说，release模式下传入的数据，会直接分配在堆上。
+
+```rust
+#[cfg(not(no_global_oom_handling))]
+#[inline(always)]
+#[doc(alias = "alloc")]
+#[doc(alias = "malloc")]
+#[stable(feature = "rust1", since = "1.0.0")]
+pub fn new(x: T) -> Self {
+    box x
+}
+```
+
+---
+

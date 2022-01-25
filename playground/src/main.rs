@@ -1,3 +1,6 @@
+#![feature(allocator_api)]
+#![feature(nonnull_slice_from_raw_parts)]
+
 mod basic;
 mod concurrency;
 mod constant;
@@ -6,6 +9,7 @@ mod error;
 mod lifetimes;
 mod modules;
 mod ownership;
+mod smart_pointer;
 mod structs;
 mod traits;
 mod wrapper_type;
