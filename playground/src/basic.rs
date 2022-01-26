@@ -61,11 +61,16 @@ mod basic {
         // They are of the form [starting_index..ending_index]
         // starting_index is the first position in the slice
         // ending_index is one more than the last position in the slice
-        let l3 = [0; 5];
 
-        // x is the slice type
+        let l3 = [0; 5];
+        // x is the slice type from the array
         let x = &l3[..];
         assert_eq!(x, &[0, 0, 0, 0, 0]);
+
+        let v = vec![1, 2, 3];
+        // y is the slice type from the vector
+        let y = &v[..];
+        assert_eq!(y, &[1, 2, 3]);
     }
 
     #[test]

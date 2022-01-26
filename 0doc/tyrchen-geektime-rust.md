@@ -423,3 +423,25 @@ MutexGuard这个结构是在调用 Mutex::lock 时生成。
 当 MutexGuard 结束时，Mutex 会做 unlock，这样用户在使用 Mutex 时，可以不必关心何时释放这个互斥锁。因为无论你在调用栈上怎样传递 MutexGuard ，哪怕在错误处理流程上提前退出，Rust 有所有权机制，可以确保只要 MutexGuard 离开作用域，锁就会被释放。
 
 MutexGuard 不允许 Send，只允许 Sync，也就是说，你可以把 MutexGuard 的引用传给另一个线程使用，但你无法把 MutexGuard 整个移动到另一个线程
+
+#### 集合容器
+
+<details><summary>Rust Container Type</summary>
+
+![](./rust-container-type.png)
+
+</details>
+
+---
+
+切片：描述一组属于同一类型、长度不确定的、在内存中连续存放的数据结构，用 [T] 来表述。因为长度不确定，所以切片是个 DST（Dynamically Sized Type）。
+
+- &[T]：表示一个只读的切片引用。
+- &mut [T]：表示一个可写的切片引用。
+- Box<[T]>：一个在堆上分配的切片。
+
+vector 和 array 都可以方便转为 slice：
+- Vec 实现了 Deref trait
+- array 内建了到 &[T] 的解引用
+
+转成slice后，都会获得切片的所有能力，包括：binary_search、chunks、concat、contains、start_with、end_with、group_by、iter、join、sort、split、swap 等一系列丰富的功能
