@@ -473,3 +473,76 @@ Box<[T]> 和切片的引用 &[T] 也很类似：它们都是在栈上有一个�
 ![](./rust-slice.png)
 
 </details>
+
+
+#### 哈希表
+
+A hash map implemented with quadratic probing and SIMD lookup.
+
+---
+
+开放寻址法 的 二次探查：
+
+哈希表最核心的特点就是：巨量的可能输入和有限的哈希表容量。这就会引发哈希冲突，也就是两个或者多个输入的哈希被映射到了同一个位置，所以我们要能够处理哈希冲突。
+
+理论上，主要的冲突解决机制有链地址法（chaining）和开放寻址法（open addressing）。
+
+链地址法，我们比较熟悉，就是把落在同一个哈希上的数据用单链表或者双链表连接起来。这样在查找的时候，先找到对应的哈希桶（hash bucket），然后再在冲突链上挨个比较，直到找到匹配的项
+
+冲突链处理哈希冲突非常直观，很容易理解和撰写代码，但缺点是哈希表和冲突链使用了不同的内存，对缓存不友好。
+
+开放寻址法，把整个哈希表看做一个大数组，不引入额外的内存，当冲突产生时，按照一定的规则把数据插入到其它空闲的位置。比如线性探寻（linear probing）在出现哈希冲突时，不断往后探寻，直到找到空闲的位置插入。
+
+二次探查（quadratic probing）:理论上是在冲突发生时，不断探寻哈希位置加减 n 的二次方，找到空闲的位置插入，我们看图，更容易理解
+
+---
+
+SIMD 查表（SIMD lookup）:
+
+Rust 的 HashMap 复用了 hashbrown 的 HashMap。hashbrown 是 Rust 下对 [Google Swiss Table](https://abseil.io/blog/20180927-swisstables) 的一个改进版实现
+
+<details><summary>HashMap的内存布局 与 SIMD</summary>
+
+如下图：其中
+
+- bucket_mask，是哈希表中哈希桶的数量减一
+- ctrl 的指针，它指向哈希表堆内存末端的 ctrl 区，通过这个地址，计算出哈希表堆地址的起始地址。
+- growth_left，指哈希表在下次自动增长前还能存储多少数据
+
+插入流程：key ‘a’ 的 hash 和 bucket_mask 0x3 运算后得到第 0 个位置插入。同时，这个 hash 的头 7 位取出来，在 ctrl 表中对应的位置，也就是第 0 个字节，把这个值写入。
+
+![](./rust-hashmap-mem-layout.png)
+
+ctrl 表的主要目的是快速查找，如下图
+
+查询流程：
+
+1. 首先对 ‘c’ 做哈希，得到一个哈希值 h；
+2. 把 h 跟 bucket_mask 做与，得到一个值，图中是 139；
+3. 拿着这个 139，找到对应的 ctrl group 的起始位置，因为 ctrl group 以 16 为一组，所以这里找到 128；
+4. 用 SIMD 指令加载从 128 对应地址开始的 16 个字节 (即一个 ctrl group 的数据)；
+5. 对 hash 取头 7 个 bit，然后和刚刚取出的 16 个字节一起做与，找到对应的匹配，如果找到了，它（们）很大概率是要找的值；
+6. 如果不是，那么以二次探查（以 16 的倍数不断累积）的方式往后查找，直到找到为止。
+
+![](./rust-hashmap-get-flow.png)
+
+</details>
+
+---
+
+扩容：
+
+HashMap::new() 时，它并没有分配空间，容量为零，随着哈希表不断插入数据，它会以 2 的幂减一的方式增长，最小是 3。当删除表中的数据时，原有的表大小不变，只有显式地调用 shrink_to_fit，才会让哈希表变小。
+
+首先，哈希表会按幂扩容，从 4 个 bucket 扩展到 8 个 bucket。
+
+---
+
+自定义Hash Key
+
+要使用到三个 trait：Hash、PartialEq、Eq，不过这三个 trait 都可以通过派生宏自动生成。其中
+
+- 实现了 Hash ，可以让数据结构计算哈希；
+- 实现了 PartialEq/Eq，可以让数据结构进行相等和不相等的比较。Eq 实现了比较的自反性（a == a）、对称性（a == b 则 b == a）以及传递性（a == b，b == c，则 a == c），PartialEq 没有实现自反性。
+
+参考hashmap.rs
