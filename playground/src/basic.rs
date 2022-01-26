@@ -71,6 +71,13 @@ mod basic {
         // y is the slice type from the vector
         let y = &v[..];
         assert_eq!(y, &[1, 2, 3]);
+
+        // Box<T> is the slice on the heap
+        let v1 = vec![1, 2, 3, 4];
+        let v1t = v1.clone();
+        let b1 = v1.into_boxed_slice();
+        let v2 = b1.into_vec();
+        assert_eq!(v1t, v2)
     }
 
     #[test]

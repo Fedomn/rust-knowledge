@@ -424,7 +424,7 @@ MutexGuard这个结构是在调用 Mutex::lock 时生成。
 
 MutexGuard 不允许 Send，只允许 Sync，也就是说，你可以把 MutexGuard 的引用传给另一个线程使用，但你无法把 MutexGuard 整个移动到另一个线程
 
-#### 集合容器
+#### 切片
 
 <details><summary>Rust Container Type</summary>
 
@@ -445,3 +445,29 @@ vector 和 array 都可以方便转为 slice：
 - array 内建了到 &[T] 的解引用
 
 转成slice后，都会获得切片的所有能力，包括：binary_search、chunks、concat、contains、start_with、end_with、group_by、iter、join、sort、split、swap 等一系列丰富的功能
+
+---
+
+特殊的切片：&str
+
+String 是一个特殊的 Vec，所以在 String 上做切片，也是一个特殊的结构 &str。
+
+String 在解引用时，会转换成 &str，如: &StringX
+
+---
+
+Box<[T]> 是一个比较有意思的存在，它和 Vec 有一点点差别：Vec 有额外的 capacity，可以增长；而 Box<[T]> 一旦生成就固定下来，没有 capacity，也无法增长。
+
+Box<[T]> 和切片的引用 &[T] 也很类似：它们都是在栈上有一个包含长度的胖指针，指向存储数据的内存位置。区别是：Box<[T]> 只会指向堆，&[T] 指向的位置可以是栈也可以是堆；此外，Box<[T]> 对数据具有所有权，而 &[T] 只是一个借用。
+
+当我们需要在堆上创建固定大小的集合数据，且不希望自动增长，那么，可以先创建 Vec<T>，再转换成 Box<[T]>
+
+当 Vec 转换成 Box<[T]> 时，没有使用到的容量就会被丢弃，所以整体占用的内存可能会降低。
+
+而且 Box<[T]> 有一个很好的特性是，不像 Box<[T;n]> 那样在编译时就要确定大小，它可以在运行期生成，以后大小不会再改变。
+
+<details><summary>Slice Types</summary>
+
+![](./rust-slice.png)
+
+</details>
