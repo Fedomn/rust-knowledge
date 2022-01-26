@@ -6,3 +6,5 @@ edition = "2018"
 [dependencies]
 chrono = "0.4.15"
 regex = "1"
+thiserror = "1.0"
+anyhow = "1.0"

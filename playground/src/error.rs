@@ -47,6 +47,15 @@ mod err {
     }
 
     #[test]
+    fn catch_unwind() {
+        use std::panic;
+        let result = panic::catch_unwind(|| {
+            panic!("Panic!");
+        });
+        assert!(result.is_err());
+    }
+
+    #[test]
     fn boxed_err() {
         use chrono::NaiveDate;
         use std::error;
@@ -126,5 +135,43 @@ mod err {
                 }
             }
         }
+    }
+
+    #[test]
+    fn custom_error_thiserror_anyhow() {
+        use anyhow::Error;
+        use anyhow::Result;
+        use std::env;
+        use thiserror::Error;
+
+        #[derive(Error, Debug)]
+        pub enum CustomError {
+            #[error("Var error {0}")]
+            VarError(String),
+
+            // forward the source and Display methods straight through to an underlying error without adding an additional message
+            #[error(transparent)]
+            ParseError(#[from] Error),
+        }
+
+        fn print_error(r: Result<String>) {
+            match r {
+                Ok(d) => println!("Get data: {}", d),
+                Err(e) => println!("Get err: {}", e),
+            }
+        }
+
+        fn gen_var_error() -> Result<String> {
+            Err(Error::from(CustomError::VarError("1".to_string())))
+        }
+
+        fn gen_parse_error() -> Result<String> {
+            let string = env::var("NOT_EXIST")?;
+            Ok(string)
+        }
+
+        print_error(Ok("1".to_string()));
+        print_error(gen_var_error());
+        print_error(gen_parse_error());
     }
 }
