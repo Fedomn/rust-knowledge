@@ -3,6 +3,7 @@
 #![feature(test)]
 
 mod basic;
+mod closure;
 mod concurrency;
 mod constant;
 mod enums;
