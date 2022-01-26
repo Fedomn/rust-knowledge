@@ -52,21 +52,28 @@ mod basic {
         println!("{:?}", list);
 
         let l2 = [1; 3];
-        println!("{:?}", l2);
+        assert_eq!(l2, [1, 1, 1]);
+    }
 
+    #[test]
+    fn slice() {
         // Slices can point to a section of an array
         // They are of the form [starting_index..ending_index]
         // starting_index is the first position in the slice
         // ending_index is one more than the last position in the slice
-        let l3 = [0; 10];
+        let l3 = [0; 5];
+
         // x is the slice type
         let x = &l3[..];
-        println!("{:?}", x);
+        assert_eq!(x, &[0, 0, 0, 0, 0]);
+    }
 
+    #[test]
+    fn vector() {
         // Vectors: grow/shrink in size
         let mut list = vec![1, 2, 3];
         list.push(4);
-        println!("{:?}", list);
+        assert_eq!(list, [1, 2, 3, 4]);
     }
 
     #[test]
