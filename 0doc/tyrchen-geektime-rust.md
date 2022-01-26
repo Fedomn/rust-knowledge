@@ -452,7 +452,9 @@ vector 和 array 都可以方便转为 slice：
 
 String 是一个特殊的 Vec，所以在 String 上做切片，也是一个特殊的结构 &str。
 
-String 在解引用时，会转换成 &str，如: &StringX
+String 在解引用时，会转换成 &str，如: &String 会被解引用成 &str
+
+[What are Rust's exact auto-dereferencing rules?](https://stackoverflow.com/questions/28519997/what-are-rusts-exact-auto-dereferencing-rules/28552082)
 
 ---
 
