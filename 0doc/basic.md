@@ -23,4 +23,16 @@ A package can have multiple binary crates by placing files in the src/bin direct
 
 use keyword that brings a path into scope.
 
-`mod custom_name;` tell Rust to load the contents of the module from another file with the same name as the module. 
+`mod custom_name;` tell Rust to load the contents of the module from another file with the same name as the module.
+
+## [visibility and privacy](https://doc.rust-lang.org/reference/visibility-and-privacy.html)
+
+pub(in path), pub(crate), pub(super), and pub(self)
+
+In addition to public and private, Rust allows users to declare an item as visible only within a given scope. The rules for pub restrictions are as follows:
+
+- pub(in path) makes an item visible within the provided path. path must be an ancestor module of the item whose 
+visibility is being declared.
+- pub(crate) makes an item visible within the current crate.
+- pub(super) makes an item visible to the parent module. This is equivalent to pub(in super).
+- pub(self) makes an item visible to the current module. This is equivalent to pub(in self) or not using pub at all.
