@@ -1,4 +1,5 @@
 #[test]
+#[allow(dead_code)]
 fn basic() {
     // a struct type (also an enum type) represent a concept, and organize similar data under a single umbrella.
     #[derive(Debug)]

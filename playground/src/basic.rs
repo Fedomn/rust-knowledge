@@ -1,4 +1,5 @@
 #[cfg(test)]
+#[allow(dead_code)]
 mod basic_test {
     #[test]
     fn variable_test() {

@@ -5,6 +5,7 @@
 // but also have additional metadata and capabilities.
 
 #[cfg(test)]
+#[allow(dead_code)]
 mod wrapper_type_test {
     use std::ops::Deref;
     use std::rc::{Rc, Weak};
