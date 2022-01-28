@@ -625,3 +625,101 @@ pub trait Fn<Args>: FnMut<Args> {
 
 任何需要 FnOnce 或者 FnMut 的场合，都可以传入满足 Fn 的闭包。
 
+### 泛型
+
+泛型实现，逐步约束，对不同的方法，泛型T的限制约束不一样，如下
+
+```rust
+impl<R> BufReader<R> {
+    pub fn capacity(&self) -> usize { ... }
+    pub fn buffer(&self) -> &[u8] { ... }
+}
+
+impl<R: Read> BufReader<R> {
+  pub fn new(inner: R) -> BufReader<R> { ... }
+  pub fn with_capacity(capacity: usize, inner: R) -> BufReader<R> { ... }
+}
+
+impl<R> fmt::Debug for BufReader<R> where R: fmt::Debug {
+  fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result { ... }
+}
+```
+
+---
+
+参数延迟绑定
+
+```rust 
+pub fn dispatch(cmd: CommandRequest, store: &impl Storage) -> CommandResponse { ... }
+// 等价于
+pub fn dispatch<Store: Storage>(cmd: CommandRequest, store: &Store) -> CommandResponse { ... }
+```
+
+--- 
+
+Phantom Type（幽灵类型）：它被广泛用在处理，数据结构定义过程中不需要，但是在实现过程中需要的泛型参数
+
+在定义数据结构时，对于额外的、暂时不需要的泛型参数，用 PhantomData 来“拥有”它们，这样可以规避编译器的报错。PhantomData 正如其名，它实际上长度为零，是个 ZST（Zero-Sized Type），就像不存在一样，唯一作用就是类型的标记。
+
+```rust
+pub struct Identifier<T> {
+  inner: u64,
+  _tag: PhantomData<T>,
+}
+```
+
+---
+
+使用泛型参数来提供多个实现
+
+本质是：为了给不同的泛型类型，提供不同具体实现。 如下：
+
+```rust
+impl<R, T> Stream for AsyncProstReader<R, T, AsyncDestination>
+where
+    T: Message + Default,
+    R: AsyncRead + Unpin,
+{
+    type Item = Result<T, io::Error>;
+
+    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        ...
+    }
+}
+
+
+impl<R, T> Stream for AsyncProstReader<R, T, AsyncFrameDestination>
+  where
+          R: AsyncRead + Unpin,
+          T: Framed + Default,
+{
+  type Item = Result<T, io::Error>;
+
+  fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+    ...
+  }
+}
+```
+
+#### 返回值泛型参数
+
+Rust 目前还不支持在 trait 里使用 impl trait 做返回值
+
+因此，可以返回 trait object，它消除了类型的差异，把所有不同的实现 Iterator 的类型都统一到一个相同的 trait object 下
+
+不过使用 trait object 是有额外的代价的，首先这里有一次额外的堆分配，其次动态分派会带来一定的性能损失。
+
+```rust
+// 返回 trait object
+pub fn trait_object_as_return_working(i: u32) -> Box<dyn Iterator<Item = u32>> {
+    Box::new(std::iter::once(i))
+}
+```
+
+
+当然，泛型编程也是一把双刃剑。任何时候，当我们引入抽象，**即便能做到零成本抽象，要记得抽象本身也是一种成本**。
+
+> 当我们把代码抽象成函数、把数据结构抽象成泛型结构，即便运行时几乎并无添加额外成本，它还是会带来设计时的成本，
+  如果抽象得不好，还会带来更大的维护上的成本。做系统设计，我们考虑 ROI（Return On Investment）时，要把 TCO（Total Cost of 
+  Ownership）也考虑进去。这也是为什么过度设计的系统和不做设计的系统，它们长期的 TCO 都非常糟糕。
+

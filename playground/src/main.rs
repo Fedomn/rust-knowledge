@@ -8,6 +8,7 @@ mod concurrency;
 mod constant;
 mod enums;
 mod error;
+mod generic;
 mod hashmap;
 mod lifetimes;
 mod modules;
