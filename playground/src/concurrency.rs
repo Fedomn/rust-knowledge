@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod concurrency {
     use std::{sync, thread};
+    use std::borrow::Borrow;
     use std::sync::Arc;
     use sync::Mutex;
 
@@ -161,5 +162,37 @@ mod concurrency {
         t2.join().unwrap();
 
         println!("data: {:?}", data);
+    }
+
+    #[test]
+    fn condvar_test() {
+        /// Condition variables represent the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.
+        /// Condvar 往往和 Mutex 一起使用：Mutex 用于保证条件在读写时互斥，Condvar 用于控制线程的等待和唤醒
+        use std::sync::{Arc, Condvar, Mutex};
+        use std::thread;
+
+        let pair = Arc::new((Mutex::new(false), Condvar::new()));
+        let pair2 = pair.clone();
+
+        // Inside of our lock, spawn a new thread, and then wait for it to start.
+        thread::spawn(move || {
+            let (lock, cvar) = pair2.borrow();
+            let mut started = lock.lock().unwrap();
+            *started = true;
+
+            println!("I'm a happy worker!");
+
+            // We notify the condvar that the value has changed.
+            cvar.notify_one();
+        });
+
+        // Wait for the thread to start up.
+        println!("Waiting worker...");
+        let (lock, cvar) = pair.borrow();
+        let mut started = lock.lock().unwrap();
+        while !*started {
+            started = cvar.wait(started).unwrap();
+        }
+        println!("Worker started!");
     }
 }
