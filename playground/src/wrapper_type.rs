@@ -1,5 +1,5 @@
-//! https://manishearth.github.io/blog/2015/05/27/wrapper-types-in-rust-choosing-your-guarantees
-//! https://doc.rust-lang.org/nightly/book/ch15-00-smart-pointers.html
+//! [wrapper-types-in-rust-choosing-your-guarantees](https://manishearth.github.io/blog/2015/05/27/wrapper-types-in-rust-choosing-your-guarantees)
+//! [rust doc smart-pointers](https://doc.rust-lang.org/nightly/book/ch15-00-smart-pointers.html)
 
 // Smart pointers, on the other hand, are data structures that not only act like a pointer
 // but also have additional metadata and capabilities.
