@@ -723,3 +723,24 @@ pub fn trait_object_as_return_working(i: u32) -> Box<dyn Iterator<Item = u32>> {
   如果抽象得不好，还会带来更大的维护上的成本。做系统设计，我们考虑 ROI（Return On Investment）时，要把 TCO（Total Cost of 
   Ownership）也考虑进去。这也是为什么过度设计的系统和不做设计的系统，它们长期的 TCO 都非常糟糕。
 
+#### trait object使用
+
+```rust
+/// 使用泛型参数
+pub fn execute_generics(cmd: &impl Executor) -> Result<Option<i32>, BoxedError> {    
+  cmd.run()
+}
+/// 使用 trait object: &dyn T
+pub fn execute_trait_object(cmd: &dyn Executor) -> Result<Option<i32>, BoxedError> {
+  cmd.run()
+}
+/// 使用 trait object: Box<dyn T>
+pub fn execute_boxed_trait_object(cmd: Box<dyn Executor>) -> Result<Option<i32>, BoxedError> {
+  cmd.run()
+}
+```
+
+impl Executor 使用的是泛型参数的简化版本，而 &dyn Executor 和 Box<dyn Executor> 是 trait object， 前者在栈上，后者分配在堆上。
+
+值得注意的是，分配在堆上的 trait object 也可以作为返回值返回，比如示例中的 Result<Option<i32>, BoxedError> 里使用了 trait object。
+
