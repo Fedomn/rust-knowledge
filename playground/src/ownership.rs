@@ -110,7 +110,7 @@ mod ownership {
 
         // change s owner to this func, after this func, rust will reclaim its memory
         fn change_owner(s: String) {
-            println!("{}", s);
+            println!("change_owner {:p} {:?}", &s, s);
         }
 
         // func receives a copy of i
@@ -130,6 +130,8 @@ mod ownership {
         }
 
         let s = String::from("start");
+        println!("change_owner {:p} {:?}", &s, s);
+        // 注意下面的函数：实际传递了s引用的copy，但它们都指向同一块数据
         change_owner(s);
         // println!("{}", s); // will error, because the owner of s has changed.
 

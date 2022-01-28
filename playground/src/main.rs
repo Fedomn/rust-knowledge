@@ -13,6 +13,7 @@ mod hashmap;
 mod lifetimes;
 mod modules;
 mod ownership;
+mod pin;
 mod smart_pointer;
 mod structs;
 mod tokio;
