@@ -33,6 +33,11 @@ jobs:
           key: ${{ runner.os }}-cargo-build-target
       - name: Install nightly
         uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly-2022-01-27
+          override: true
+          components: rustfmt, clippy, rust-src
       - name: Check code format
         run: cargo fmt -- --check
       - name: Check the package for errors
