@@ -33,10 +33,6 @@ jobs:
           key: ${{ runner.os }}-cargo-build-target
       - name: Install nightly
         uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          override: true
       - name: Check code format
         run: cargo fmt -- --check
       - name: Check the package for errors
