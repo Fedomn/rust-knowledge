@@ -15,6 +15,7 @@ mod modules;
 mod ownership;
 mod smart_pointer;
 mod structs;
+mod tokio;
 mod traits;
 mod wrapper_type;
 
