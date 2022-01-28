@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod constant {
+mod constant_test {
     // https://doc.rust-lang.org/edition-guide/rust-next/const-fn.html
     const fn ten() -> i8 {
         10

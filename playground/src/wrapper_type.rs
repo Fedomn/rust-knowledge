@@ -5,12 +5,12 @@
 // but also have additional metadata and capabilities.
 
 #[cfg(test)]
-mod wrapper_type {
+mod wrapper_type_test {
     use std::ops::Deref;
     use std::rc::{Rc, Weak};
 
-    use crate::wrapper_type::wrapper_type::BList::{Cons, Nil};
-    use crate::wrapper_type::wrapper_type::RcList::{RcCons, RcNil};
+    use crate::wrapper_type::wrapper_type_test::BList::{Cons, Nil};
+    use crate::wrapper_type::wrapper_type_test::RcList::{RcCons, RcNil};
     use std::cell::RefCell;
 
     // Boxes allow you to store data on the heap rather than the stack. What remains on the stack is the pointer to the heap data.

@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod smart_pointer {
+mod smart_pointer_test {
     use std::borrow::Cow;
     use std::collections::HashMap;
     use std::fmt::{Debug, Formatter};
@@ -53,7 +53,7 @@ mod smart_pointer {
     // missing lifetime specifier:
     // this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `strs` or `prefix`
     pub fn insert_prefix_cow<'a>(strs: &'a Vec<String>, prefix: &'a str) -> Vec<Cow<'a, String>> {
-        strs.into_iter()
+        strs.iter()
             .filter_map(|s| match s.starts_with(prefix) {
                 true => Some(Cow::Borrowed(s)),
                 false => Some(Cow::Owned(prefix.to_owned() + s)),
@@ -65,7 +65,7 @@ mod smart_pointer {
     fn test_cow_basic() {
         let strs = vec!["hi_rust".to_string(), "rust".to_string()];
         let p = "hi_";
-        let new_strs = insert_prefix_cow(&strs, &p);
+        let new_strs = insert_prefix_cow(&strs, p);
         println!("{:?}", new_strs);
 
         for i in 0..2 {
@@ -198,10 +198,11 @@ mod cow_bench_test {
 
     use test::Bencher;
 
-    use super::smart_pointer::*;
+    use super::smart_pointer_test::*;
 
     fn insert_prefix_clone(strs: &Vec<String>, prefix: &str) -> Vec<String> {
-        strs.into_iter()
+        // use iter instead of into_iter: Readability: https://rust-lang.github.io/rust-clippy/master/index.html#into_iter_on_ref
+        strs.iter()
             .filter_map(|s| match s.starts_with(prefix) {
                 true => Some(s.clone()),
                 false => Some(s.clone() + prefix),
@@ -216,7 +217,7 @@ mod cow_bench_test {
         let mut f = vec!["rust".to_string(); 1024];
         c.append(&mut f);
         let p = "hi_";
-        b.iter(|| insert_prefix_cow(&c, &p));
+        b.iter(|| insert_prefix_cow(&c, p));
     }
 
     #[bench]
@@ -226,6 +227,6 @@ mod cow_bench_test {
         let mut f = vec!["rust".to_string(); 1024];
         c.append(&mut f);
         let p = "hi_";
-        b.iter(|| insert_prefix_clone(&c, &p));
+        b.iter(|| insert_prefix_clone(&c, p));
     }
 }

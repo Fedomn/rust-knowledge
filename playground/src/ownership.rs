@@ -2,7 +2,7 @@
 //! Rust uses a third approach: memory is managed through a system of ownership with a set of rules that the compiler checks at compile time.
 
 #[cfg(test)]
-mod ownership {
+mod ownership_test {
     #[test]
     fn scope() {
         // SCOPE owns a VARIABLE owns a VALUE
@@ -34,7 +34,7 @@ mod ownership {
         // Its value is only known in runtime can dynamically change in runtime.
         // Rust allocates it on the HEAP memory.
         let mut b = String::from("b");
-        b.push_str("!");
+        b.push('!');
         println!("{}", b);
 
         // b goes out of scope. Rust calls the drop fn and returns the memory used by b back to OS
@@ -120,8 +120,7 @@ mod ownership {
 
         // give the owner of s to calling func
         fn give_owner() -> String {
-            let s = String::from("s");
-            s
+            String::from("s")
         }
 
         // give back the owner of s to calling func

@@ -59,7 +59,7 @@ mod closure_test {
     fn fn_mut_test() {
         let mut name = String::from("John");
         let mut c = move |greeting: String| {
-            name.push_str("1");
+            name.push('1');
             println!("{} {}", greeting, name);
         };
 

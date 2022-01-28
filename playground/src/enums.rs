@@ -50,10 +50,10 @@ fn option() {
     // Rust doesn't’t even have a dedicated null data type. Instead it has something call Option
     // Option is a enum
     fn read(path: &str) -> Option<&str> {
-        if path != "" {
+        if !path.is_empty() {
             return Some(path);
         }
-        return None;
+        None
     }
     match read("path") {
         Some(val) => println!("read {}", val),

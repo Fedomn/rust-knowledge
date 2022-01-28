@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod concurrency {
+mod concurrency_test {
     use std::borrow::Borrow;
     use std::sync::Arc;
     use std::{sync, thread};
@@ -54,9 +54,16 @@ mod concurrency {
 
             // MutexGuard impl Drop to release lock automatically when it goes out of scope
         }
+        println!("--------");
         println!("m = {:?}", m);
-        let _ = m.lock().unwrap();
-        let _ = m.lock().unwrap();
+        {
+            let num = m.lock().unwrap();
+            println!("m = {:?}, num = {:?}", m, num);
+        }
+        println!("--------");
+        println!("m = {:?}", m);
+        let num = m.lock().unwrap();
+        println!("m = {:?}, num = {:?}", m, num);
     }
 
     #[test]
@@ -136,7 +143,7 @@ mod concurrency {
                 {
                     // 性能优化：compare_exchange 需要独占访问，当拿不到锁时，我们
                     // 先不停检测 locked 的状态，直到其 unlocked 后，再尝试拿锁
-                    while self.locked.load(Ordering::Relaxed) == true {}
+                    while self.locked.load(Ordering::Relaxed) {}
                 } // **1
 
                 // 已经拿到并加锁，开始干活

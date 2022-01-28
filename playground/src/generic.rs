@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod generic {
+mod generic_test {
     #[test]
     fn phantom_data_test() {
         use std::marker::PhantomData;

@@ -1,7 +1,7 @@
 #[cfg(test)]
-mod basic {
+mod basic_test {
     #[test]
-    fn variable() {
+    fn variable_test() {
         // variable is immutable
         let a = 1;
         println!("{}", a);

@@ -27,7 +27,8 @@ mod err {
 
     #[test]
     fn fallback_err() {
-        let res = env::var("FALLBACK_ERR").unwrap_or("false".to_string());
+        // https://rust-lang.github.io/rust-clippy/master/index.html#or_fun_call
+        let res = env::var("FALLBACK_ERR").unwrap_or_else(|_| "false".to_string());
         println!("{}", res);
     }
 

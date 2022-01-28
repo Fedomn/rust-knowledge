@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod traits {
+mod traits_test {
 
     #[test]
     fn test_trait_associated_type() {
