@@ -31,11 +31,11 @@ jobs:
         with:
           path: target
           key: ${{ runner.os }}-cargo-build-target
-      - name: Install stable
+      - name: Install nightly
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: stable
+          toolchain: nightly
           override: true
       - name: Check code format
         run: cargo fmt -- --check
