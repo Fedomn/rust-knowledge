@@ -1,4 +1,5 @@
 #[cfg(test)]
+#[allow(clippy::unnecessary_filter_map)]
 mod smart_pointer_test {
     use std::borrow::Cow;
     use std::collections::HashMap;
@@ -52,7 +53,7 @@ mod smart_pointer_test {
 
     // missing lifetime specifier:
     // this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `strs` or `prefix`
-    pub fn insert_prefix_cow<'a>(strs: &'a Vec<String>, prefix: &'a str) -> Vec<Cow<'a, String>> {
+    pub fn insert_prefix_cow<'a>(strs: &'a [String], prefix: &'a str) -> Vec<Cow<'a, String>> {
         strs.iter()
             .filter_map(|s| match s.starts_with(prefix) {
                 true => Some(Cow::Borrowed(s)),
@@ -193,6 +194,7 @@ mod smart_pointer_test {
 }
 
 #[cfg(test)]
+#[allow(clippy::unnecessary_filter_map)]
 mod cow_bench_test {
     extern crate test; // 声明外部crate依赖，并将其bind到当前作用于中
 
@@ -200,7 +202,7 @@ mod cow_bench_test {
 
     use super::smart_pointer_test::*;
 
-    fn insert_prefix_clone(strs: &Vec<String>, prefix: &str) -> Vec<String> {
+    fn insert_prefix_clone(strs: &[String], prefix: &str) -> Vec<String> {
         // use iter instead of into_iter: Readability: https://rust-lang.github.io/rust-clippy/master/index.html#into_iter_on_ref
         strs.iter()
             .filter_map(|s| match s.starts_with(prefix) {

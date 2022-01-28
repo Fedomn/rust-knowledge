@@ -172,6 +172,7 @@ mod concurrency_test {
     }
 
     #[test]
+    #[allow(clippy::mutex_atomic)]
     fn condvar_test() {
         /// Condition variables represent the ability to block a thread such that it consumes no CPU time while waiting for an event to occur.
         /// Condvar 往往和 Mutex 一起使用：Mutex 用于保证条件在读写时互斥，Condvar 用于控制线程的等待和唤醒

@@ -150,6 +150,7 @@ mod ownership_test {
     }
 
     #[test]
+    #[allow(clippy::ptr_arg)]
     fn scope_reference() {
         // reference: It's a value that refers to another value without taking its ownership.
         // represented with a leading ampersand &.
