@@ -71,6 +71,39 @@ mod tokio_channel_test {
         tx.send(10).unwrap();
         tx.send(20).unwrap();
     }
+
+    #[tokio::test]
+    async fn channel_with_future_test() {
+        use std::thread;
+        use tokio::sync::mpsc;
+        use tokio::sync::oneshot;
+        use tokio::time::Duration;
+
+        let (tx, mut rx) = mpsc::unbounded_channel::<(String, oneshot::Sender<String>)>();
+
+        // 使用 thread 计算密集型任务
+        thread::spawn(move || {
+            while let Some((data, reply)) = rx.blocking_recv() {
+                // 读取从 tokio task 过来的 msg，注意这里用的是 blocking_recv，而非 await
+                println!("Thread got data: {}, start calculate...", data);
+                thread::sleep(Duration::from_millis(100));
+                reply.send("OK".to_string()).unwrap();
+            }
+        });
+
+        // 使用 tokio task 处理 IO 密集型任务
+        tokio::spawn(async move {
+            // 为每个消息创建一个 oneshot channel，用于发送回复
+            let (reply, reply_recv) = oneshot::channel();
+            tx.send(("I'm Data".to_string(), reply)).unwrap();
+
+            let calc_data = reply_recv.await.unwrap();
+            println!("Calc Done data: {}", calc_data);
+        });
+
+        // 让两个 task 有机会执行完
+        tokio::time::sleep(Duration::from_millis(500)).await;
+    }
 }
 
 #[cfg(test)]
