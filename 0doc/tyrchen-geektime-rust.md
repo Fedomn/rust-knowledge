@@ -792,3 +792,87 @@ actor 是一种有栈协程。每个 actor，有自己的一个独立的、轻�
 
 Rust 标准库没有 actor 的实现，但是社区里有比较成熟的 [actix](https://github.com/actix/actix)（大名鼎鼎的 actix-web 就是基于 actix 实现的），以及 [bastion](https://github.com/bastion-rs/bastion)。
 
+#### Future
+
+Rust 的 Future，只有在主动 await 后才开始执行。
+
+在 Future 出现之前，我们的 Rust 代码都是同步的。也就是说，当你执行一个函数，CPU 处理完函数中的每一个指令才会返回。如果这个函数里有 IO 的操作，实际上，操作系统会把函数对应的线程挂起，放在一个等待队列中，直到 IO 操作完成，才恢复这个线程，并从挂起的位置继续执行下去。
+
+随着 CPU 技术的不断发展，新世纪应用软件的主要矛盾不再是 CPU 算力不足，而是过于充沛的 CPU 算力和提升缓慢的 IO 速度之间的矛盾。如果有大量的 IO 操作，你的程序大部分时间并没有在运算，而是在不断地等待 IO。
+
+你需要定义合适的数据结构来追踪每个文件的读取，在用户态进行相应的调度，阻塞等待 IO 的数据结构的运行，让没有等待 IO 的数据结构得到机会使用 CPU，以及当 IO 操作结束后，恢复等待 IO 的数据结构的运行等等。这样的操作粒度更小，可以最大程度利用 CPU 资源。这就是类似 Future 这样的并发结构的主要用途。
+
+所以，Rust 提供了相应处理手段 async/await ：async 来方便地生成 Future，await 来触发 Future 的调度和执行。
+
+---
+
+异步函数（async fn）的返回值是一个奇怪的 impl Future<Output> 结构：
+
+```rust
+pub trait Future {
+    type Output;
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
+}
+
+pub enum Poll<T> {
+    Ready(T),
+    Pending,
+}
+```
+
+因此，你可以定义类似 async fn的函数：
+
+```rust
+async fn say_hello1(name: &str) -> usize {
+    println!("Hello {}", name);
+    42
+}
+
+// async fn 关键字相当于一个返回 impl Future<Output> 的语法糖
+fn say_hello2<'fut>(name: &'fut str) -> impl Future<Output = usize> + 'fut {
+    async move {
+        println!("Hello {}", name);
+        42
+    }
+}
+```
+
+#### Executor
+
+Rust 虽然也提供 Future 这样的协程，但它在语言层面并不提供 executor，把要不要使用 executor 和使用什么样的 executor 的自主权交给了开发者。好处是，当我的代码中不需要使用协程时，不需要引入任何运行时；而需要使用协程时，可以在生态系统中选择最合适我应用的 executor。
+
+常见的 executor 有：
+- futures 库自带的很简单的 executor，上面的代码就使用了它的 block_on 函数；
+- tokio 提供的 executor，当使用 #[tokio::main] 时，就隐含引入了 tokio 的 executor；
+- async-std 提供的 executor，和 tokio 类似；
+- smol 提供的 async-executor，主要提供了 block_on。
+
+---
+
+reactor：维护事件队列。当事件来临时，通知 executor 唤醒某个任务等待运行。
+
+Rust 使用 Future 做异步处理的整个结构就清晰了，我们以 tokio 为例：async/await 提供语法层面的支持，Future 是异步任务的数据结构，当 fut.await 时，executor 就会调度并执行它。
+
+tokio 的调度器（executor）会运行在多个线程上，运行线程自己的 ready queue 上的任务（Future），如果没有，就去别的线程的调度器上“偷”一些过来运行。
+
+当某个任务无法再继续取得进展，此时 Future 运行的结果是 Poll::Pending，那么调度器会挂起任务，并设置好合适的唤醒条件（Waker），等待被 reactor 唤醒。
+
+而 reactor 会利用操作系统提供的异步 I/O，比如 epoll / kqueue / IOCP，来监听操作系统提供的 IO 事件，当遇到满足条件的事件时，就会调用 Waker.wake() 唤醒被挂起的 Future。这个 Future 会回到 ready queue 等待执行。
+
+<details><summary>Rust Future Flow</summary>
+
+![](./rust-future-flow.png)
+
+</details>
+
+---
+
+注意事项：
+
+- 当你要处理的任务是 CPU 密集型，而非 IO 密集型，更适合使用线程，而非 Future。
+  - Future 的调度是协作式多任务（Cooperative Multitasking），也就是说，除非 Future 主动放弃 CPU，不然它就会一直被执行，直到运行结束。
+  - 一般的做法是我们使用 channel 来在线程和 future 两者之间做同步
+- tokio::spawn 创建一个异步任务，放入 executor 中执行。
+
+
+
