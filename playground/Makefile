@@ -14,6 +14,7 @@ build:
 
 check:
 	cargo check --all
+	cargo deny check
 
 clean:
 	cargo clean
