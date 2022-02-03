@@ -1,6 +1,8 @@
 #![feature(allocator_api)]
 #![feature(nonnull_slice_from_raw_parts)]
 #![feature(test)]
+#![feature(trait_alias)]
+#![feature(type_alias_impl_trait)]
 
 mod basic;
 mod closure;

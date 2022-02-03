@@ -70,4 +70,37 @@ mod traits_test {
 
         println!("{}", text);
     }
+
+    /// [trait_alias and type_alias_impl_trait explanation](https://stackoverflow.com/questions/57937436/how-to-alias-an-impl-trait)
+    #[test]
+    fn trait_alias_test() {
+        trait X = Fn(u32) -> u32;
+        fn f1() -> impl X {
+            |x: u32| x
+        }
+        fn f2() -> impl X {
+            |x: u32| x
+        }
+        f1();
+        f2();
+    }
+
+    #[test]
+    fn type_alias_impl_trait_test() {
+        type X1 = impl Fn(u32) -> u32;
+        type X2 = impl Fn(u32) -> u32;
+        fn f1() -> X1 {
+            |x: u32| x
+        }
+
+        // error: concrete type differs from previous defining opaque type use
+        // fn f2() -> X1 {
+        //     |x: u32| x
+        // }
+        fn f2() -> X2 {
+            |x: u32| x
+        }
+        let _ = f1();
+        let _ = f2();
+    }
 }

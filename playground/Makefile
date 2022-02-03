@@ -21,6 +21,7 @@ clean:
 
 fix:
 	cargo fix --allow-dirty --allow-staged
+	cargo fmt --all
 	cargo fmt -- --check
 	cargo clippy --all-targets --all-features --tests --benches -- -D warnings
 	cargo doc --all-features --no-deps
