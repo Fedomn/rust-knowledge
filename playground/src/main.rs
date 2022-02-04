@@ -13,6 +13,7 @@ mod error;
 mod generic;
 mod hashmap;
 mod lifetimes;
+mod macros;
 mod modules;
 mod ownership;
 mod pin;
