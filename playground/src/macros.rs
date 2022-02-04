@@ -35,4 +35,11 @@ mod macros_test {
         println!("{:?}", my_vec! {1, 2, 3});
         println!("{:?}", my_vec![1; 3]);
     }
+
+    use procmacrotestlib::query;
+
+    #[test]
+    fn proc_macro_test_1() {
+        query!("select * from t where id > 1;");
+    }
 }

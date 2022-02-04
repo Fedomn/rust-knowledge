@@ -3,6 +3,11 @@ name = "rust-knowledge"
 version = "0.1.0"
 edition = "2018"
 
+[lib]
+name = "procmacrotestlib"
+path = "./src/macro_lib.rs"
+proc-macro = true
+
 [dependencies]
 chrono = "0.4.15"
 regex = "1"

@@ -941,6 +941,10 @@ Lisp 的语言直接把 AST（抽象语法树）暴露给开发者，开发者�
 - 属性宏（attribute macro）：可以在其他代码块上添加属性，为代码块提供更多功能。比如 rocket 的 get / put 等路由属性。
 - 派生宏（derive macro）：为 derive 属性添加新的功能。这是我们平时使用最多的宏，比如 #[derive(Debug)] 为我们的数据结构提供 Debug trait 的实现、#[derive(Serialize, Deserialize)]为我们的数据结构提供 serde 相关 trait 的实现。
 
+过程宏要比声明宏要复杂很多，不过无论是哪一种过程宏，本质都是一样的，都涉及要把输入的 TokenStream 处理成输出的 TokenStream。
+
+需要在Cargo.toml中添加 `proc-macro = true` 的声明。这样，编译器才允许你使用 #[proc_macro] 相关的宏。
+
 
 
 
