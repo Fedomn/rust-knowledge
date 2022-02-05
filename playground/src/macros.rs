@@ -1,5 +1,5 @@
 #[cfg(test)]
-#[allow(clippy::vec_init_then_push)]
+#[allow(clippy::vec_init_then_push, clippy::no_effect)]
 mod macros_test {
 
     #[macro_export]
@@ -38,7 +38,6 @@ mod macros_test {
 
         println!("{:?}", my_vec! {1, 2, 3});
         println!("{:?}", my_vec![1; 3]);
-        
     }
 
     use procmacrotestlib::query;
