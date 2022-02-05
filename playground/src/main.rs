@@ -13,6 +13,7 @@ mod enums;
 mod error;
 mod generic;
 mod hashmap;
+mod iter;
 mod lifetimes;
 mod macros;
 mod modules;
