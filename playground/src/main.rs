@@ -3,6 +3,7 @@
 #![feature(test)]
 #![feature(trait_alias)]
 #![feature(type_alias_impl_trait)]
+#![feature(trace_macros)]
 
 mod basic;
 mod closure;

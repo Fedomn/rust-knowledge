@@ -31,9 +31,14 @@ mod macros_test {
         v.push(1);
         println!("{:?}", v);
 
-        println!("{:?}", my_vec![1, 2, 3]);
+        trace_macros!(true);
+        let v2 = my_vec![1, 2, 3];
+        trace_macros!(false);
+        println!("{:?}", v2);
+
         println!("{:?}", my_vec! {1, 2, 3});
         println!("{:?}", my_vec![1; 3]);
+        
     }
 
     use procmacrotestlib::query;
