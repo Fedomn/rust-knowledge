@@ -6,6 +6,7 @@
 #![feature(trace_macros)]
 
 mod basic;
+mod bitvec;
 mod closure;
 mod concurrency;
 mod constant;
