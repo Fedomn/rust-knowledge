@@ -13,6 +13,7 @@
 
 #[cfg(test)]
 pub mod btivec_test {
+
     use bitvec::prelude::*;
 
     #[test]
@@ -31,5 +32,8 @@ pub mod btivec_test {
         let mut data = [1u8, 1, 1];
         let bits = data.view_bits_mut::<Lsb0>();
         println!("{:?}", bits);
+
+        let b = BitVec::<u8, Lsb0>::repeat(false, 8);
+        println!("{:?}", b);
     }
 }
