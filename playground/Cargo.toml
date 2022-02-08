@@ -3,6 +3,9 @@ name = "rust-knowledge"
 version = "0.1.0"
 edition = "2018"
 
+[features]
+simd = []
+
 [lib]
 name = "procmacrotestlib"
 path = "./src/macro_lib.rs"

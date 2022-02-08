@@ -4,6 +4,7 @@
 #![feature(trait_alias)]
 #![feature(type_alias_impl_trait)]
 #![feature(trace_macros)]
+#![feature(portable_simd)]
 
 mod basic;
 mod bitvec;
@@ -20,6 +21,7 @@ mod macros;
 mod modules;
 mod ownership;
 mod pin;
+mod simd;
 mod smart_pointer;
 mod structs;
 mod tokio;
