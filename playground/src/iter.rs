@@ -31,4 +31,19 @@ mod iter_test {
         let c: MyCollection = i.collect();
         assert_eq!(c.0, vec![0, 1, 2, 3, 4]);
     }
+
+    #[test]
+    fn option_auto_unwrap() {
+        // `Result` and `Option` all implements `IntoIterator`
+        // see https://doc.rust-lang.org/std/option/enum.Option.html#impl-IntoIterator-2
+        let mut v = Vec::<Option<i8>>::new();
+        v.push(Some(1));
+        v.push(Some(2));
+        v.push(Some(3));
+        for ele in v.iter().flatten() {
+            println!("{}", ele);
+        }
+
+        v.iter().flat_map(|x| x).for_each(|x| println!("{}", x));
+    }
 }
