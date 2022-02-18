@@ -14,6 +14,7 @@
 - [rust-quiz](https://github.com/dtolnay/rust-quiz)
 - [Rust futures](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
 - [learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop)
+- [Analysis of various tricky Rust code](https://github.com/dtolnay/case-studies)
 
 ### example
 - [tyrchen rust-training](https://github.com/tyrchen/rust-training)
