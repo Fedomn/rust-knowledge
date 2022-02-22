@@ -278,6 +278,7 @@ dependencies = [
  "anyhow",
  "bitvec",
  "chrono",
+ "num-traits",
  "regex",
  "thiserror",
  "tokio",

@@ -19,6 +19,7 @@ mod iter;
 mod lifetimes;
 mod macros;
 mod modules;
+mod num;
 mod ownership;
 mod pin;
 mod simd;

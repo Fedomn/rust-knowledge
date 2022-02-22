@@ -33,6 +33,7 @@ mod iter_test {
     }
 
     #[test]
+    #[allow(clippy::vec_init_then_push, clippy::flat_map_identity)]
     fn option_auto_unwrap() {
         // `Result` and `Option` all implements `IntoIterator`
         // see https://doc.rust-lang.org/std/option/enum.Option.html#impl-IntoIterator-2
