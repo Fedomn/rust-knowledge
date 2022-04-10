@@ -45,5 +45,6 @@ mod macros_test {
     #[test]
     fn proc_macro_test_1() {
         query!("select * from t where id > 1;");
+        hello();
     }
 }
