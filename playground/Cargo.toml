@@ -12,7 +12,7 @@ path = "./src/macros/macro_lib.rs"
 proc-macro = true
 
 [dependencies]
-chrono = "0.4.15"
+chrono = "0.4"
 regex = "1"
 thiserror = "1.0"
 anyhow = "1.0"
