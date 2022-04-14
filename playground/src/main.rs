@@ -7,7 +7,6 @@
 #![feature(portable_simd)]
 
 mod basic;
-mod bitvec;
 mod closure;
 mod concurrency;
 mod constant;

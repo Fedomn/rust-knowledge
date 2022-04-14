@@ -1,3 +1,5 @@
+mod bitvec;
+
 #[cfg(test)]
 mod simd_test {
     use std::simd::f32x4;
