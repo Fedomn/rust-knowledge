@@ -1,3 +1,11 @@
+mod closure;
+mod constant;
+mod enums;
+mod generic;
+mod hashmap;
+mod num;
+mod structs;
+
 #[cfg(test)]
 #[allow(dead_code)]
 mod basic_test {
