@@ -5,7 +5,10 @@
 #![feature(type_alias_impl_trait)]
 #![feature(trace_macros)]
 #![feature(portable_simd)]
+#![feature(proc_macro_hygiene, stmt_expr_attributes)]
+#![feature(generators)]
 
+mod asyncs;
 mod basic;
 mod concurrency;
 mod error;

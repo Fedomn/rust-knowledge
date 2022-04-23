@@ -19,3 +19,5 @@ anyhow = "1.0"
 tokio = { version = "1", features = ["full"] }
 bitvec = { version = "1" }
 num-traits = "0.2"
+futures-async-stream = "0.2"
+futures = "0.3"
