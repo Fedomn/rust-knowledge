@@ -3,6 +3,7 @@ mod constant;
 mod enums;
 mod generic;
 mod hashmap;
+mod modules;
 mod num;
 mod structs;
 

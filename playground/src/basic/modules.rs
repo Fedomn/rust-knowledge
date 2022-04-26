@@ -8,7 +8,7 @@ pub mod front_of_house {
 #[allow(dead_code)]
 pub fn eat_at_restaurant() {
     // Absolute path
-    crate::modules::front_of_house::hosting::add_to_waitlist();
+    crate::basic::modules::front_of_house::hosting::add_to_waitlist();
 
     // Relative path
     front_of_house::hosting::add_to_waitlist();

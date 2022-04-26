@@ -15,7 +15,6 @@ mod error;
 mod iter;
 mod lifetimes;
 mod macros;
-mod modules;
 mod ownership;
 mod pin;
 mod simd;
