@@ -16,6 +16,7 @@
 - [learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop)
 - [Analysis of various tricky Rust code](https://github.com/dtolnay/case-studies)
 - [effective-rust](https://www.lurklurk.org/effective-rust/)
+- [Rust Memory Container Cheat-sheet](https://github.com/usagi/rust-memory-container-cs)
 
 ### example
 - [tyrchen rust-training](https://github.com/tyrchen/rust-training)
