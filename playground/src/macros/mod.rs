@@ -9,6 +9,7 @@ mod macros_test {
             std::vec::Vec::new()
         };
 
+        // 声明 macro 的 元变量: https://doc.rust-lang.org/reference/macros-by-example.html#metavariables
         // 处理 my_vec![1, 2, 3]
         // 条件捕获的参数使用 $ 开头的标识符来声明
         // $(...),* 告诉编译器可以匹配任意多个以逗号分隔的表达式，然后捕获到的每一个表达式可以用 $el 来访问。
