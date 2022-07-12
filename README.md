@@ -18,7 +18,7 @@
 - [Rust Memory Container Cheat-sheet](https://github.com/usagi/rust-memory-container-cs)
 
 ### macros
-- [The Little Book of Rust Macros](https://danielkeep.github.io/tlborm/book/README.html)
+- [The Little Book of Rust Macros](https://veykril.github.io/tlborm/introduction.html)
 - [learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop)
 
 ### example

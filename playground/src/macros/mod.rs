@@ -1,3 +1,8 @@
+mod macro_patterns;
+
+/// #[macro_use]: This can be applied to either modules or external crates
+/// #[macro_export]: Macros can be exported from the current crate
+
 #[cfg(test)]
 #[allow(clippy::vec_init_then_push, clippy::no_effect)]
 mod macros_test {
