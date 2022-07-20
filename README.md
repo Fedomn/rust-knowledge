@@ -10,7 +10,6 @@
 - [Rust Functions](https://www.possiblerust.com/guide/how-to-read-rust-functions-part-1)
 - [Rust Design Patterns](https://rust-unofficial.github.io/patterns/)
 - [rustmagazine](https://rustmagazine.github.io/rust_magazine_2021/index.html)
-- [rust性能手册](https://blues-star.github.io/perf-book-zh/title-page.html)
 - [rust-quiz](https://github.com/dtolnay/rust-quiz)
 - [Rust futures](https://fasterthanli.me/articles/understanding-rust-futures-by-going-way-too-deep)
 - [Analysis of various tricky Rust code](https://github.com/dtolnay/case-studies)
@@ -20,6 +19,10 @@
 ### macros
 - [The Little Book of Rust Macros](https://veykril.github.io/tlborm/introduction.html)
 - [learn to write Rust procedural macros](https://github.com/dtolnay/proc-macro-workshop)
+
+### perf
+- [rust性能手册](https://blues-star.github.io/perf-book-zh/title-page.html)
+- [Achieving warp speed with Rust](https://gist.github.com/jFransham/369a86eff00e5f280ed25121454acec1)
 
 ### example
 - [tyrchen rust-training](https://github.com/tyrchen/rust-training)
