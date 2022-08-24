@@ -21,3 +21,4 @@ bitvec = { version = "1" }
 num-traits = "0.2"
 futures-async-stream = "0.2"
 futures = "0.3"
+petgraph = "0.6"

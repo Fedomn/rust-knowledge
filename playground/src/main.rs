@@ -8,6 +8,7 @@
 #![feature(proc_macro_hygiene, stmt_expr_attributes)]
 #![feature(generators)]
 
+mod algorithm;
 mod asyncs;
 mod basic;
 mod concurrency;
