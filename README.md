@@ -29,6 +29,7 @@
 - [tyrchen geektime-rust](https://github.com/tyrchen/geektime-rust.git)
 - [twitter rustcommon](https://github.com/twitter/rustcommon)
 - [learnrust](https://github.com/inancgumus/learnrust)
+- [design-patterns-rust](https://github.com/fadeevab/design-patterns-rust)
 
 ### algorithm
 - [leetcode-rust](https://github.com/pymongo/leetcode-rust)
