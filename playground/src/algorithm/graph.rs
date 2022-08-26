@@ -49,4 +49,23 @@ mod graph_test {
         // The graph **does not invalidate** any unrelated node or edge indices when items are removed.
         assert_eq!(children, vec![4.into()]);
     }
+
+    #[test]
+    fn test_stable_graph_add_node() {
+        let a = "a".to_string();
+        let b = "b".to_string();
+        let mut g = StableDiGraph::<String, (), usize>::default();
+
+        let idx1 = g.add_node(a);
+        assert_eq!(idx1, NodeIndex::new(0));
+
+        let idx2 = g.add_node(b);
+        assert_eq!(idx2, NodeIndex::new(1));
+
+        g.add_edge(idx1, idx2, ());
+        let children = g
+            .neighbors_directed(idx1, Direction::Outgoing)
+            .collect::<Vec<_>>();
+        assert_eq!(children, vec![1.into()]);
+    }
 }
