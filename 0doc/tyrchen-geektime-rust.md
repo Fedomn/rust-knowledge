@@ -553,6 +553,10 @@ HashMap::new() 时，它并没有分配空间，容量为零，随着哈希表�
 - 实现了 Hash ，可以让数据结构计算哈希；
 - 实现了 PartialEq/Eq，可以让数据结构进行相等和不相等的比较。Eq 实现了比较的自反性（a == a）、对称性（a == b 则 b == a）以及传递性（a == b，b == c，则 a == c），PartialEq 没有实现自反性。
 
+[PartialEq vs Eq](https://www.reddit.com/r/rust/comments/t8d6wb/why_does_rust_have_eq_and_partialeq/):
+- PartialEq: This trait allows for partial equality, for types that do not have a full equivalence relation. For example, in floating point numbers NaN != NaN, so floating point types implement PartialEq but not Eq.
+- Eq requires reflexive-ness, that a == a. But floats have NaN which breaks that rule, because NaN != NaN.
+
 参考hashmap.rs
 
 ### 闭包
