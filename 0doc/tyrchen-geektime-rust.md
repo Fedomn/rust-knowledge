@@ -557,6 +557,9 @@ HashMap::new() 时，它并没有分配空间，容量为零，随着哈希表�
 - PartialEq: This trait allows for partial equality, for types that do not have a full equivalence relation. For example, in floating point numbers NaN != NaN, so floating point types implement PartialEq but not Eq.
 - Eq requires reflexive-ness, that a == a. But floats have NaN which breaks that rule, because NaN != NaN.
 
+[F32/f64 should implement Hash](https://internals.rust-lang.org/t/f32-f64-should-implement-hash/5436/7):
+- 与上面的 Eq 类似，相同的 NaN 会产生不同的 hash 值，这是不合理的
+
 参考hashmap.rs
 
 ### 闭包
