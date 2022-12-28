@@ -7,6 +7,7 @@
 #![feature(portable_simd)]
 #![feature(proc_macro_hygiene, stmt_expr_attributes)]
 #![feature(generators)]
+#![feature(poll_ready)]
 
 mod algorithm;
 mod asyncs;
