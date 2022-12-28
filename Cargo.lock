@@ -467,6 +467,7 @@ dependencies = [
  "futures-async-stream",
  "num-traits",
  "petgraph",
+ "pin-project",
  "regex",
  "thiserror",
  "tokio",
