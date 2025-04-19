@@ -10,7 +10,6 @@
 /// 2. truncated integer storage
 /// 3. precise control of memory layout
 ///
-
 #[cfg(test)]
 pub mod btivec_test {
 

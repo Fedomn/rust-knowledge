@@ -10,7 +10,7 @@ fn test_custom_hash_key() {
     }
 
     impl<'a> Student<'a> {
-        fn new(name: &'a str, age: u8) -> Student {
+        fn new(name: &'a str, age: u8) -> Student<'a> {
             Student { name, age }
         }
     }

@@ -7,7 +7,7 @@ mod graph_test {
     #[test]
     fn test_shortest() {
         // Create an undirected graph with `i32` nodes and edges with `()` associated data.
-        let g = UnGraph::<i32, ()>::from_edges(&[(1, 2), (2, 3), (3, 4), (1, 4)]);
+        let g = UnGraph::<i32, ()>::from_edges([(1, 2), (2, 3), (3, 4), (1, 4)]);
 
         // Find the shortest path from `1` to `4` using `1` as the cost for every edge.
         let node_map = dijkstra(&g, 1.into(), Some(4.into()), |_| 1);
@@ -16,7 +16,7 @@ mod graph_test {
 
     #[test]
     fn test_graph_remove_node() {
-        let mut g = UnGraph::<i32, ()>::from_edges(&[(1, 2), (2, 3), (3, 4), (1, 4)]);
+        let mut g = UnGraph::<i32, ()>::from_edges([(1, 2), (2, 3), (3, 4), (1, 4)]);
 
         let children: Vec<_> = g
             .neighbors_directed(1.into(), Direction::Outgoing)
@@ -34,7 +34,7 @@ mod graph_test {
 
     #[test]
     fn test_stable_graph_remove_node() {
-        let mut g = StableDiGraph::<i32, ()>::from_edges(&[(1, 2), (2, 3), (3, 4), (1, 4)]);
+        let mut g = StableDiGraph::<i32, ()>::from_edges([(1, 2), (2, 3), (3, 4), (1, 4)]);
 
         let children: Vec<_> = g
             .neighbors_directed(1.into(), Direction::Outgoing)

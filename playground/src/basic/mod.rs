@@ -114,7 +114,7 @@ mod basic_test {
         let x = &l3[..];
         assert_eq!(x, &[0, 0, 0, 0, 0]);
 
-        let v = vec![1, 2, 3];
+        let v = [1, 2, 3];
         // y is the slice type from the vector
         let y = &v[..];
         assert_eq!(y, &[1, 2, 3]);
@@ -215,7 +215,7 @@ mod basic_test {
 
     #[test]
     fn stream() {
-        let nums = vec![1, 2, 3];
+        let nums = [1, 2, 3];
         let double = |n: &i32| -> i32 { n * 2 };
         let less_than_10 = |n: &i32| -> bool { *n < 10 };
         let result: Vec<i32> = nums.iter().map(double).filter(less_than_10).collect();

@@ -24,7 +24,7 @@ mod simd_test {
     #[ignore]
     fn test_raw_add(b: &mut Bencher) {
         let a1 = 10.0;
-        let a2 = vec![10.0, 20.0, 30.0, 40.0];
+        let a2 = [10.0, 20.0, 30.0, 40.0];
         b.iter(|| a2.iter().map(|x| x + a1).collect::<Vec<f32>>());
     }
 

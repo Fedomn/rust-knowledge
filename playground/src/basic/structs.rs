@@ -49,6 +49,7 @@ fn tuple_structs() {
 
     // You can access tuple struct fields using their indexes.
     println!("R: {}, G: {}, B: {}", _black.0, _black.1, _black.2);
+    println!("R: {}, G: {}, B: {}", _origin.0, _origin.1, _origin.2);
 }
 
 // https://doc.rust-lang.org/book/ch05-03-method-syntax.html

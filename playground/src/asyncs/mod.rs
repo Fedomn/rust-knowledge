@@ -57,7 +57,7 @@ mod simple_future_test {
 
     #[tokio::test]
     async fn test_simple_future() {
-        let res = RandFuture::default().await;
+        let res = RandFuture.await;
         assert_eq!(res, 1);
     }
 }

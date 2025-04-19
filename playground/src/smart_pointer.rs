@@ -53,13 +53,13 @@ mod smart_pointer_test {
 
     // missing lifetime specifier:
     // this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `strs` or `prefix`
-    pub fn insert_prefix_cow<'a>(strs: &'a [String], prefix: &'a str) -> Vec<Cow<'a, String>> {
+    pub fn insert_prefix_cow<'a>(strs: &'a [String], prefix: &'a str) -> Vec<Cow<'a, str>> {
         strs.iter()
             .filter_map(|s| match s.starts_with(prefix) {
-                true => Some(Cow::Borrowed(s)),
+                true => Some(Cow::Borrowed(s.as_str())),
                 false => Some(Cow::Owned(prefix.to_owned() + s)),
             })
-            .collect::<Vec<Cow<String>>>()
+            .collect::<Vec<Cow<str>>>()
     }
 
     #[test]

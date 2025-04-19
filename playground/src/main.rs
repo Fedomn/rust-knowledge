@@ -1,13 +1,11 @@
 #![feature(allocator_api)]
-#![feature(nonnull_slice_from_raw_parts)]
 #![feature(test)]
 #![feature(trait_alias)]
 #![feature(type_alias_impl_trait)]
 #![feature(trace_macros)]
 #![feature(portable_simd)]
 #![feature(proc_macro_hygiene, stmt_expr_attributes)]
-#![feature(generators)]
-#![feature(poll_ready)]
+#![feature(coroutines)]
 
 mod algorithm;
 mod asyncs;

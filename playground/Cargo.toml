@@ -14,12 +14,12 @@ proc-macro = true
 [dependencies]
 chrono = "0.4"
 regex = "1"
-thiserror = "1.0"
+thiserror = "2.0"
 anyhow = "1.0"
 tokio = { version = "1", features = ["full"] }
 bitvec = { version = "1" }
 num-traits = "0.2"
 futures-async-stream = "0.2"
 futures = "0.3"
-petgraph = "0.6"
+petgraph = "0.8"
 pin-project = "1"
